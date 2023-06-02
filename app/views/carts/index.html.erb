@@ -1,0 +1,35 @@
+<div class="page-heading">
+  <h1>Shopping Cart</h1>
+</div>
+
+<% if @cart_items.count <= 0 %>
+  <h1 class="page-heading">Please add items to your cart first</h1>
+<% else %>
+<div class="main">
+  <div class="main-row">
+    <% @cart_items.each do |cart_item| %>
+      <div class="image-card" style="width: 18rem;">
+        <% if cart_item.product.images.attached? %>
+          <%= image_tag(cart_item.product.images.first, class:'img-fluid',style:"height:12rem; width:100%;") %>
+        <% end %>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Product Name: <%= cart_item.product.product_name %></li>
+            <li class="list-group-item">Cart Owner: <%= cart_item.cart.user.first_name %></li>
+            <li class="list-group-item">Available Stock <%= cart_item.product.stock_quantity %> </li>
+          </ul><br />
+          <div class="cart-link">
+            <%= link_to 'Delete', cart_item_path(id: cart_item.id), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-dark" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+<% end %><br />
+<div class="page-heading">
+  <div>
+    <%= link_to 'Checkout', cart_checkout_path(cart_id: current_user.cart.id), class:"btn-sm btn-secondary"%>
+    <%= link_to 'Back', root_path, class: 'btn-sm btn-dark' %>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<h1 class="order-heading">Order Details</h1>
+<div><hr /></div>
+<div class="parent-div">
+  <div class="jumbotron">
+    <p>Order By: <%= @order.user.first_name %> <%= @order.user.last_name %></p>
+    <p>Email: <%= @order.user.email %></p>
+    <p>Phone number: <%= @order.user.phone_number %></p>
+    <p>Delivery Address :<%= @order.order_address %></p>
+    <p>Order Quantity: <%= @order.order_quantity %></p>
+    <p>Order Price(per item): $<%= @order.product.price %></p>
+    <p>Order Shipping Fees: $<%= @order.product.shipping_fees %></p>
+    <p>Order Subtotal(price + shipping fees): $<%= @order.subtotal %></p>
+    <p>Order Tax: $<%= @order.product.tax %></p>
+    <p>Order Total: $<%= @order.total %></p>
+    <% if @order.approval_status != true %>
+      <%= link_to 'Cancel Order', @order, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-secondary' %>
+    <% end %>
+      <%= link_to 'Edit order', edit_order_path(@order), class:"btn-sm btn-info" %>
+    <%= link_to 'Back', orders_path, class:"btn-sm btn-dark" %>
+  </div>
+  <div>
+    <% if @order.product.images.attached? %>
+      <% @order.product.images.each do |image| %>
+        <%= image_tag image ,class: "product-image" %>
+      <% end %>
+    <% end %>
+  </div><br/>
+</div>

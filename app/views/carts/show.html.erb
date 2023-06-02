@@ -1,0 +1,16 @@
+<h1>Shopping Cart</h1>
+
+<div class="page-heading">
+  <h1>Shopping Cart</h1>
+</div><hr />
+
+<% @cart_items.each do |cart_item| %>
+  <div class="jumbotron"><hr />
+    <p>View Order Details: </p>
+    <p>Product Name: <%= cart_item.product.product_name %></p>
+    <p>Added By: <%= cart_item.user.first_name %> <%= cart_item.user.last_name %></p>
+  </div><br />
+  <% end %>
+<div class="page-heading">
+  <%= link_to 'Back', root_path, class: 'btn-sm btn-dark' %>
+</div>

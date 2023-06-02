@@ -1,0 +1,14 @@
+<%= form_tag("/checkout", { method: :post, data: { turbo: false } }) do %>
+  <%= hidden_field_tag :cart_id, @cart.id %>
+  <div class="page-heading">Please tap the button below to make the order payment.</div><br />
+  <div class="page-heading">
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+      data-description="<%= @cart_item.product_name %>"
+      data-amount="<%= @cart_item.total.to_i %>"
+      data-email="<%= current_user.email %>"
+      data-customer-id="<%= current_user.stripe_id %>"
+      data-currency="usd">
+    </script>
+  </div>
+<% end %>

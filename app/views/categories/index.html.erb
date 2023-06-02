@@ -1,0 +1,35 @@
+<% if @categories.count <= 0 %>
+  <h2 class="page-heading">No categories available. Please visit after some time!!</h2>
+<% else %>
+  <h1 class="page-heading">Product Categories</h1><hr />
+  <div class="main">
+    <div class="main-row">
+      <% @categories.each do |category| %>
+        <div class="image-card" style="width: 18rem;">
+          <% if category.image.attached? %>
+            <%= image_tag(category.image, class:'img-fluid',style:"height:12rem; width:100%;") %>
+          <% end %>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Category: <%= category.category_name %></li>
+              <li class="list-group-item">Subcategories: <%= category.subcategories.count %></li>
+              <li class="list-group-item">Availability: In Stock</li>
+            </ul><br />
+            <div class="card-links">
+              <%= link_to "Explore", category_subcategories_path(category.id), class:"btn-sm btn-primary"%>
+              <%= link_to "Edit", edit_category_path(category), class:"btn-sm btn-secondary"%>
+              <%= link_to "Delete", category, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-danger' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div><br />
+<% end %>
+<% if current_user.role == 'Customer' %>
+  <div class="page-heading">
+    <%= link_to "Home", root_path, class:"btn-sm btn-secondary" %>
+  </div>
+<% else %>
+  <%= render 'links' %>
+<% end %>

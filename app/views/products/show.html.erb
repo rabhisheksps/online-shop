@@ -1,0 +1,30 @@
+<h1>Product Details:</h1><hr />
+
+<div class="jumbotron">
+  <h2>Product Name: <%= @product.product_name %></h2>
+  <p>Product Price: $<%= @product.price.round(2) %></p>
+  <p>Product Vendor: <%= @product.vendor %></p>
+  <p>Product material: <%= @product.material %></p>
+  <p>Product Description: <%= @product.description %></p>
+  <p>Stock Available: <%= @product.stock_quantity %></p>
+  <p>Product Shipping Fees: $<%= @product.shipping_fees.round(2) %></p>
+  <p>Added Tax: $<%= @product.tax.to_s %> $</p>
+</div><br/>
+<hr class="my-4">
+<div>
+  <% if @product.images.attached? %>
+    <% @product.images.each do |image| %>
+      <%= image_tag image ,class: "product-image" %>
+    <% end %>
+  <% end %>
+</div><br/>
+<div class="page-heading">
+  <div>
+    <%= link_to "Back", products_path, class:"btn-sm btn-dark" %>
+    <% if current_user.role == "Customer" %>
+      <% if !current_user.wishlist.wishlist_products.include?(@product) %>
+        <%= link_to "Add to wishlist", add_to_wishlist_product_path(@product), method: :post, class: "btn-sm btn-secondary" %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

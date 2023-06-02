@@ -1,0 +1,19 @@
+<% if @addresses.count <= 0 %>
+  <h2 class="page-heading">Please add an address first</h2>
+<% else %>
+  <h2 class="order-heading">List of all your added addresses.</h2>
+  <% @addresses.each do |address| %>
+    <div class="jumbotron"><hr />
+      <p>Address Holder Name: <%= address.user.first_name %> <%= address.user.last_name %></p>
+      <p>Address Type: <%= address.address_type %></p>
+      <p>Full Address: <%= address.address_line_1 %>, <%= address.city %>, <%= address.state %>, <%= address.country %></p>
+      <p>Area Pincode:<%= address.pincode %></p>
+    </div><br />
+    <%= link_to 'Delete Address', address, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-dark' %>
+    <%= link_to 'Back', root_path, class: 'btn-sm btn-secondary' %>
+    <%= link_to 'Edit', edit_address_path(address), class: 'btn-sm btn-dark' %>
+  <% end %>
+<% end %>
+<div class="page-heading">
+  <%= link_to 'Add New Address', new_user_address_path(:user_id), class: 'btn-sm btn-dark' %>
+</div>

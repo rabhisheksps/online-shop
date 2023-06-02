@@ -1,0 +1,42 @@
+<h2 class="page-heading">Create a new order</h2>
+
+<%= form_with model: @order, url: product_orders_path(product_id: @product.id), method: :post, local: true do |f| %>
+  <div class="field">
+    <%= f.label :order_quantity %><br />
+    <%= f.number_field :order_quantity, autofocus: true %>
+  </div><br />
+
+  <div class="field">
+    <%= f.label :order_address %><br />
+    <%= f.text_area :order_address, value: current_user&.addresses&.first&.address_line_1 || "", autofocus: true %>
+  </div><br />
+  
+  <div class="field">
+    <%= f.label :area_pincode %><br />
+    <%= f.text_field :pincode, value: current_user&.addresses&.first&.pincode || "", autofocus: true %>
+  </div><br />
+
+  <div class="field">
+    <%= f.label :city %><br />
+    <%= f.text_field :city, value: current_user&.addresses&.first&.city|| "", autofocus: true %>
+  </div><br />
+
+  <div class="field">
+    <%= f.label :state %><br />
+    <%= f.text_field :state, value: current_user&.addresses&.first&.state || "", autofocus: true %>
+  </div><br />
+
+  <div class="field">
+    <%= f.label :country %><br />
+    <%= f.text_field :country, value: current_user&.addresses&.first&.country || "", autofocus: true %>
+  </div><br />
+
+  <!-- <div class="field">
+    <%= f.check_box :read_terms %>
+    <%= f.label "Order once approved by admin cannot be cancelled" %>
+  </div><br /> -->
+
+  <div>
+    <%= f.button "Create Order", class: "btn btn-sm btn-primary", data: { turbo: false } %>
+  </div><br />
+<% end %>

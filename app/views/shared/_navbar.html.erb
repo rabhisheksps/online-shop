@@ -1,0 +1,68 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <%= link_to "Ekart App", root_path, class:"navbar-brand " %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <% if user_signed_in? %>
+          <% if current_user.role == 'Merchant' %> 
+            <li class="nav-item">
+              <%= link_to "My Products", my_products_path, class: 'nav-link' %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "View Orders", orders_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Wishlist", wishlist_products_path, class: 'nav-link' %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "View Cart", carts_path, class: 'nav-link' %>
+            </li>
+          <% end %>
+          <li class="nav-item">
+            <%= link_to "Hi, #{current_user.first_name}", user_path(current_user.id), class: 'nav-link' %>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              User
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><%= link_to "Edit Profile", edit_user_registration_path, class: "dropdown-item" %></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><%= link_to "Saved Addresses", addresses_path, class: "dropdown-item" %></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete, class:"dropdown-item"%></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <li class="nav-item">
+              <li><%= link_to "Categories", categories_path, class: "nav-link" %></li>
+            </li>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to 'Sign In', new_user_session_path, class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Sign Up', new_user_registration_path, class: 'nav-link' %>
+          </li>
+          <li>
+            <%= button_to "Sign in with Google", user_google_oauth2_omniauth_authorize_path,method: :post, class: '', data: { turbo: false }  %>
+          </li>
+        <% end %>
+        <li class="nav-item">
+          <%= link_to "About Us", about_us_path, class: 'nav-link' %>
+        </li>
+      </ul>
+      <% if user_signed_in? %>
+        <form class="d-flex" action="/search_product">
+          <input class="form-control me-2" name="q" type="search" placeholder="Material/Vendor" aria-label="Search">
+          <button class="search btn btn-outline-success" type="submit">Search</button>
+        </form>
+      <% end %>
+    </div>
+  </div>
+</nav>

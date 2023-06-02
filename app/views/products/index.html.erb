@@ -1,0 +1,13 @@
+<% if user_signed_in? %>
+  <% if current_user.role == 'Customer' %>
+    <%= render 'customer_index' %>
+  <% elsif current_user.role == 'Merchant' %>
+    <%= render 'merchant_index' %>
+  <% else %>
+    <h1>No Products</h1>
+  <% end %>
+<% else %>
+  <div class="page-heading">
+    <h1>Please sign up or login first!</h1>
+  </div>
+<% end %> 

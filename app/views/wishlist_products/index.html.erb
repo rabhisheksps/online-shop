@@ -1,0 +1,28 @@
+<% if @wishlist_products.count <= 0 %>
+  <h2 class="page-heading">No products added to wishlist yet!</h2><hr />
+<% else %>
+<h1 class="page-heading">Your Wishlist</h1><hr />
+  <table class="table table-bordered">
+    <thead class="heading thead-dark">
+      <tr>
+        <th scope="col">Product Name: </th>
+        <th scope="col">Product Price: </th>
+        <th scope="col">Product Material: </th>
+        <th scope="col">Product Vendor: </th>
+        <th scope="col">Wishlist: </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @wishlist_products.each do |wishlist_product| %>
+        <% product = wishlist_product.product %>
+          <tr>
+            <td><%= link_to product.product_name, wishlist_product_path(product.id), class: 'product-link' %></td>
+            <td><%= product.price%> $</td>
+            <td><%= product.material%></td>
+            <td><%= product.vendor%></td>
+            <td><%= link_to 'Remove', wishlist_product_path(wishlist_product), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-dark" %></td> 
+          </tr>
+      <% end %>
+    </tbody>
+  </table><br>
+<% end %>

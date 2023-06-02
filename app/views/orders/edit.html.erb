@@ -1,0 +1,30 @@
+<h1>Edit your order</h1>
+<%= form_with(model: @order) do |f| %>
+  <% if @order.errors.any? %>
+  <div style="color: red">
+    <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+    <ul>
+      <% @order.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>  
+  <div>
+    <div class="field">
+      <%= f.label :order_quantity %><br />
+      <%= f.number_field :order_quantity, autofocus: true %>
+    </div><br />
+
+    <div class="field">
+      <%= f.label :order_address %><br   />
+      <%= f.text_area :order_address, placeholder: "Your Address", value: current_user&.addresses.first.city %>
+    </div><br/>
+
+    <%= f.hidden_field :product_id, value: params[:product_id] %>
+    
+    <div>
+      <%= f.button "Update Order", class: "btn btn-sm btn-primary" %>
+    </div><br />
+  </div>
+<% end %>

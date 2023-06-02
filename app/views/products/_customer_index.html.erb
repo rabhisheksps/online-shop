@@ -1,0 +1,44 @@
+<% if @products.count <= 0 %>
+  <h2 class="page-heading">No products available. Please visit after some time!!</h2>
+<% else %>
+  <h1 class="page-heading">Products List</h1><hr />
+  <table class="table table-bordered">
+    <thead class="heading thead-dark">
+      <tr>
+        <th scope="col">Product Name: </th>
+        <th scope="col">Product Price: </th>
+        <th scope="col">Product Material: </th>
+        <th scope="col">Product Vendor: </th>
+        <th scope="col">Product Shipping Fees: </th>
+        <th scope="col">Added Tax: </th>
+        <th scope="col">Stock Available: </th>
+        <th colspan="3">Shopping Cart:</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <% if product.approval_status == "Approved" %>
+          <tr>
+            <td><%= link_to product.product_name, product_path(product), class: 'product-link' %></td>
+            <td>$<%= product.price.round(2)%></td>
+            <td><%= product.material%></td>
+            <td><%= product.vendor%></td>
+            <td>$<%= product.shipping_fees.round(2)%> $</td>
+            <td>$<%= product.tax.round(2) %></td>
+            <td><%= product.stock_quantity %></td>
+            <td>
+              <% if current_user.cart.cart_items.include?(product) %>
+                <%= link_to "View Cart", carts_path(cart_id: current_user.cart.id), class: 'btn-sm btn-secondary' %>
+              <% else %>
+                <%= link_to 'Add to cart', cart_add_item_path(product_id: product.id, cart_id: current_user.cart.id), class:"btn-sm btn-dark" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table><br>
+<% end %>
+<div class="page-heading">
+  <%= paginate @products %>
+</div>

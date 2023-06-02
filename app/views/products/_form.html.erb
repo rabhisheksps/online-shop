@@ -1,0 +1,72 @@
+<% if current_user.approval_status == "Approved" %>
+  <%= form_with(model: product) do |form| %>
+    <% if product.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+        <ul>
+          <% product.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field form-group">
+      <%= form.text_field :product_name, class:"form-control", placeholder:"Product Name" %>
+    </div><br/>
+
+    <div class="field form-group">
+      <%= form.select :category_id, options_from_collection_for_select(Category.all, "id", "category_name") %>
+    </div><br/>
+
+    <div class="field form-group">
+      <%= form.select :subcategory_id, options_from_collection_for_select(Subcategory.all, "id", "subcategory_name") %>
+    </div><br/>
+    
+    <div class="field form-group">
+      <%= form.text_field :price, step: :any,  class:"form-control", placeholder:"Product Price"  %>
+    </div><br/>
+
+    <div class="field form-group">
+      <%= form.text_field :vendor, class:"form-control", placeholder:"Product Vendor"  %>
+    </div><br/>
+
+    <div class="field form-group">
+      <%= form.text_field :material, class:"form-control", placeholder:"Product Materail"  %>
+    </div><br/>
+
+    <div class="field form-group">
+      <%= form.number_field :stock_quantity, class:"form-control", placeholder:"Stock Quantity" %>
+    </div><br/>
+    
+    <div class="field">
+      <%= form.number_field :shipping_fees, step: :any, class:"form-control", placeholder: "Shipping Fees", autofocus: true %>
+    </div><br />
+    
+    <div class="field">
+      <%= form.number_field :tax, step: :any, class:"form-control", placeholder: "Shipping Tax", autofocus: true %>
+    </div><br />
+
+    <div class="field form-group">
+      <%= form.text_area :description, class:"form-control", placeholder:"Product Description"  %>
+    </div><br/>
+
+    <div class="field">
+      <%= form.label "Product Available" %>
+      <%= form.check_box :available %> <br />
+    </div><br />
+
+    <div>
+      <%= form.file_field :images, multiple: true, accept:"image/jpeg, image/jpg" %>
+    </div><br />
+
+    <div>
+      <%= form.button "Update", class:'btn btn-sm btn-secondary' %>
+      <%= link_to "Back", products_path , class:"btn btn-sm btn-dark"%>
+    </div>
+  <% end %>
+<% else %>
+  <div class="page-heading">
+    <h1>You account has not yet been approved by the Admin.</h1>
+  </div>
+<% end %>

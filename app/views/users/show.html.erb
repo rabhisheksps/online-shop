@@ -1,0 +1,24 @@
+<div class="page-heading">
+  <h1>User Profile</h1>
+</div><hr />
+<div class="profile-pic">
+  <div class="info jumbotron">
+    <h2>Full Name: <%= @user.first_name %> <%= @user.last_name %></h2>
+    <p>Profile Type: <%= @user.role %></p>
+    <p>Email: <%= @user.email %></p>
+    <p>Phone Number: <%= @user.phone_number %></p>
+    <p>Address :<%= @user&.addresses&.first&.address_line_1 || "" %></p>
+    <p>Area Pincode: <%= @user&.addresses&.first&.pincode || "" %></p>
+  </div><br/>
+  <div>
+    <% if @user.profile_picture.persisted? %>
+      <%= image_tag @user.profile_picture, class: "profile-image"  %>
+    <% end %> 
+  </div>
+</div><br /><br />
+<div class="page-heading">
+  <div>  
+    <%= link_to "Back", root_path,  class: 'btn-sm btn-dark' %>
+    <%= link_to "Delete my account", @user, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-secondary' %>
+  </div>
+</div>

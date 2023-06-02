@@ -1,0 +1,195 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+  .login-info{
+    position: absolute; 
+    top: 0; 
+    right: 0;
+  }
+
+  .new-product{
+    display: flex;
+    justify-content: center ;
+    margin-bottom: 15px;
+  }
+
+  .product-image{
+    height: 200px;
+    width: 200px;
+  }
+
+  
+  .footer{
+    margin-top: 140px;
+   }
+
+   .heading{
+    background-color: black;
+    color: white;
+  }
+  
+  a, a:link, a:visited {
+    text-decoration: none;
+    color: white;
+  }
+
+  a.product-link{
+    color: black;
+  }
+
+  a.order-link{
+    color: black;
+  }
+
+  a.dropdown-item{
+    color: black;
+  }
+
+  .role-field{
+    width: 200px;
+  }
+
+  .order-heading{
+    display: flex;
+    justify-content: center;
+  }
+
+
+  .column {
+    float: left;
+    width: 33.3%;
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+  
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 8px;
+  }
+  
+  .about-section {
+    padding: 50px;
+    text-align: center;
+    background-color: #474e5d;
+    color: white;
+  }
+
+  .about-section h1{
+    color: white;
+  }
+  
+  .container {
+    padding: 0 16px;
+  }
+  
+  .container::after, .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  .title {
+    color: grey;
+  }
+  
+  .button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  .button:hover {
+    background-color: #555;
+  }
+  
+  .product-link{
+    color: black;
+  }
+
+  .parent-div{
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .search{
+    color: white;
+  }
+
+  .page-heading{
+    justify-content: center;
+    display: flex;
+  }
+
+  a.page-link, a.page-link:visited{
+    text-decoration: none;
+    color: black;
+  }
+
+  a.page-item{
+    text-decoration: none;
+    color: black;
+  }
+
+  .page-item.active .page-link{
+    color: #000;
+  }
+
+  .form-control{
+    font-size: .95em;
+  }
+
+  .buy{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .main{
+    display: flex;
+    justify-content: center;
+  }
+
+  .main-row{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .image-card{
+    margin-bottom: 14px;
+    margin: 10px;
+  }
+
+  .profile-pic{
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .profile-image{
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+  }
+
+  .cart-link{
+    display: flex;
+    justify-content: center;
+  }

@@ -1,0 +1,29 @@
+<p>Hello <%= current_user.first_name %></p>
+
+<p>Congratulations! You have successfully placed your order.</p>
+
+<p>Below are your purchased product order details:</p>
+<table border="1" cellspacing="0" cellpadding="0" >
+  <tr>
+    <th>Order Placed By:</th>
+    <th>Product Name</th>
+    <th>Order Address</th>
+    <th>Order Quantity</th>
+    <th>Order Total</th>
+  <tr>
+  <tr>
+    <td><%= @user.first_name %></td>
+    <td>$<%= @product.product_name %></td>
+    <td><%= @order.order_address %></td>
+    <td><%= @order.order_quantity %></td>
+    <td><%= @order.total %></td>
+  <tr>
+</table>
+
+<p><%= link_to 'View full invoice', @charge.receipt_url %></p>
+
+<p>In case you have any queries, you can react out to us via Contact us form.</p>
+
+<p>Kind Regards,</p>
+<p>Ekart Team.</p>
+

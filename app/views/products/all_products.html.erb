@@ -1,0 +1,38 @@
+<% if @products.count <= 0 %>
+  <h2 class="page-heading">No Products available. Please visit after some time!!</h2>
+<% else %>
+  <h1 class="page-heading">Our Products</h1><hr />
+  <div class="main">
+    <div class="main-row">
+      <% @products.each do |product| %>
+        <div class="image-card" style="width: 18rem;">
+          <% if product.images.attached? %>
+            <%= image_tag(product.images.first, class:'img-fluid',style:"height:12rem; width:100%;") %>
+          <% end %>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Product Name: <%= product.product_name %></li>
+              <li class="list-group-item">Product Price: $<%= product.price.round(2) %></li>
+              <li class="list-group-item">Product Vendor: <%= product.vendor %></li>
+              <li class="list-group-item">Stock Available: <%= product.stock_quantity %></li>
+            </ul>
+            <div class="buy">
+              <%= link_to 'Buy', new_product_order_path(product_id: product.id), class:"btn-sm btn-dark" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div><br />
+<% end %>
+<div class="page-heading">
+  <div>
+    <%= link_to "New Product", new_product_path,  class: 'btn-sm btn-dark' %>
+    <%= link_to "Home", root_path, class:"btn-sm btn-secondary" %>
+  </div>
+</div>
+<% if @products.count >= 3 %>
+  <div class="page-heading">
+    <%= paginate @products %>
+  </div>
+<% end %>
