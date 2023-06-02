@@ -89,4 +89,5 @@ Rails.application.routes.draw do
   post 'webhooks/payments/cancel', to: 'webhooks/payments#cancel'
   get 'checkout_status', to: 'payments#checkout_status'
   resources :cart_items, only: %i[edit update]
+  get 'user_card_info', to: 'card_infos#show'
 end

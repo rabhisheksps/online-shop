@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :products_of_wishlist, through: :wishlist, source: :products
 
   has_one :cart
+  has_one :card_info
   has_many :cart_items, through: :cart
 
   def create_stripe_customer    

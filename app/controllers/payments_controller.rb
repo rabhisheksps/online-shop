@@ -27,7 +27,6 @@ class PaymentsController < ApplicationController
     # customer.update(card_token: card.id)
 
     # puts get_order_images
-    # debugger
 
     puts product_names.join(", ")
 
@@ -40,6 +39,20 @@ class PaymentsController < ApplicationController
       currency: 'usd',
       product: stripe_product.id,
     })
+
+    stripe_customer = Stripe::Customer.create_source(
+      'cus_Nu9c8gld60Kxx4',
+      {source: 'tok_visa'},
+    )
+
+    brand = stripe_customer.brand
+    country = stripe_customer.country
+    exp_month = stripe_customer.exp_month
+    exp_year = stripe_customer.exp_year
+    last4 = stripe_customer.last4
+
+    # debugger
+    CardInfo.create(user_id: current_user.id, brand: brand, country: country, exp_month: exp_month, exp_year: exp_year, last4: last4) if current_user.card_info.nil?
   
     # puts "************************************************************"
     # puts @product.shipping_fees
@@ -47,10 +60,12 @@ class PaymentsController < ApplicationController
     # puts @product.price * @order.order_quantity
     # puts total_amount
     
-    @session = Stripe::Checkout::Session.create(
+    session = Stripe::Checkout::Session.create(
       success_url: checkout_status_url + "?status=success",
       cancel_url: checkout_status_url + "?status=failed",
       customer_email: current_user.email,
+      billing_address_collection: 'required',
+      phone_number_collection: {enabled: false},
       line_items: [{
         price: price.id,
         quantity: 1 #because stripe calculates it as one whole final amount
@@ -67,37 +82,52 @@ class PaymentsController < ApplicationController
       # }],
       mode: 'payment',
     )
-    @session_id = @session.id
-    redirect_to @session.url, allow_other_host: true
+    
+    debugger
+    # session_id = session.id
+    redirect_to session.url, allow_other_host: true
     # @cart.update(payment_status: "Paid")
 
-    # charge = Stripe::Charge.create( customer: current_user.stripe_id,
-    #   amount: price.unit_amount,
-    #   currency: 'usd'
-    # )
+      # charge = Stripe::Charge.create( customer: current_user.stripe_id,
+      #   amount: price.unit_amount,
+      #   currency: 'usd'
+      # )
 
-    # if charge["captured"]
-    #   @order.update(payment_status: 'Paid')
-    # end
+
+      # if charge["captured"]
+      #   @cart.update(payment_status: 'Paid')
+      # end
+
+    # puts charge.source.last4
     # redirect_to root_path, notice: 'Payment was successfully processed. Waiting for admin approval.'
   
-  # rescue Stripe::CardError => e
-  #   flash[:error] = e.message
-  #   redirect_to root_path, notice: "Payment unsuccessful. Please try again!."
+    # rescue Stripe::CardError => e
+    #   flash[:error] = e.message
+    #   redirect_to root_path, notice: "Payment unsuccessful. Please try again!."
   end
+
 
   def checkout_status
     if params[:status] == 'success'
+      # debugger
+      # session_id = params[:session_id]
+      # payment_session = Stripe::Checkout::Session.retrieve(session_id)
+      # customer_id = checkout_session.customer
+      # customer = Customer.find_or_initialize_by(stripe_customer_id: customer_id)
 
+      # cards = Stripe::Customer.list_sources(
+      #   customer_id,
+      #   object: 'card'
+      # )
+
+
+      # customer.email = session.customer_details.email
+      # puts customer
+
+      @cart = current_user.cart
+      @cart.update(payment_status: 'Paid')
+      @cart.cart_items.destroy_all
       debugger
-      payment_session = Stripe::Checkout::Session.retrieve(@session_id)
-      customer = Customer.find_or_initialize_by(stripe_customer_id: @session.customer)
-      customer.email = session.customer_details.email
-      puts customer
-
-      # @cart = current_user.cart
-      # @cart.update(payment_status: 'Paid')
-      # @cart.cart_items.destroy_all
       redirect_to orders_path, notice: "Payment successfully made. Please wait for admin approval."
     else params[:status] == 'failed'
       redirect_to root_path, notice: "Payment failed. Please try again."

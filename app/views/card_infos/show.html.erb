@@ -1,0 +1,17 @@
+<div class="page-heading">
+  <h1>User Card Info</h1>
+</div><hr />
+<div>
+  <div class="info jumbotron">
+    <h2>Full Name: <%= current_user.first_name %> <%= current_user.last_name %></h2>
+    <p>Card Brand: <%= @card.brand %></p>
+    <p>Card Country: <%= @card.country %></p>
+    <p>Expiry Date: <%= @card.exp_month %>/<%= @card.exp_year %></p>
+    <p>Last 4 Digits :<%= @card.last4 %></p>
+  </div>
+</div><br />
+<div class="page-heading">
+  <div>  
+    <%= link_to "Back", root_path,  class: 'btn-sm btn-dark' %>
+  </div>
+</div>
