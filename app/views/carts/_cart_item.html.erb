@@ -1,0 +1,26 @@
+<%= turbo_frame_tag dom_id(cart_item) do %>
+  <div class="image-card" style="width: 18rem;">
+    <% if cart_item.product.images.attached? %>
+      <%= image_tag(cart_item.product.images.first, class:'img-fluid',style:"height:12rem; width:100%;") %>
+    <% end %>
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">Product Name: <%= cart_item.product.product_name %></li>
+        <li class="list-group-item">Cart Owner: <%= cart_item.cart.user.first_name %></li>
+        <li class="list-group-item">Available Stock: <%= cart_item.product.stock_quantity %> </li>
+      </ul><br />
+      <div class="cart-link">
+        <%= link_to 'Delete', cart_item_path(id: cart_item.id), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-dark" %>
+      </div><br />
+      <div class="page-heading">
+        <div>
+          <%= link_to '+', carts_change_quantity_path(id: cart_item.id, change_type: 'Increase'), data: { turbo_method: :put }, class: "btn-sm btn-dark" %>
+          <%= link_to '-', carts_change_quantity_path(id: cart_item.id, change_type: 'Decrease'), data: { turbo_method: :put }, class: "btn-sm btn-secondary" %>
+        </div>
+      </div>
+      <div>
+        Quantity: <%= cart_item.cart_item_quantity %>
+      </div>
+    </div>
+  </div>
+<% end %>
