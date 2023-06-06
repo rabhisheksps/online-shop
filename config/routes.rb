@@ -90,4 +90,5 @@ Rails.application.routes.draw do
   get 'checkout_status', to: 'payments#checkout_status'
   resources :cart_items, only: %i[edit update]
   get 'user_card_info', to: 'card_infos#show'
+  put 'carts/change_quantity', to: 'carts#change_quantity'
 end
