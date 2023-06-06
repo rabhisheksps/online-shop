@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :lockable, :timeoutable, :trackable and :omniauthable
 
-  after_create :create_stripe_customer, :create_cart
+  after_create :create_stripe_customer, :create_cart, :create_wishlist
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable,
@@ -16,13 +16,13 @@ class User < ApplicationRecord
 
   has_many :addresses
   has_many :products, dependent: :destroy
-  has_many :orders, dependent: :destroy
+  has_many :orders , dependent: :destroy
 
   has_one :wishlist, dependent: :destroy
   has_many :wishlist_products, through: :wishlist
   has_many :products_of_wishlist, through: :wishlist, source: :products
 
-  has_one :cart
+  has_one :cart, dependent: :destroy
   has_one :card_info
   has_many :cart_items, through: :cart
 
@@ -42,5 +42,10 @@ class User < ApplicationRecord
 
   def create_cart
     self.cart = Cart.create(user_id: self.id)
+    cart.update(payment_status: "Unpaid")
+  end
+
+  def create_wishlist
+    self.wishlist = Wishlist.create(user_id: self.id)
   end
 end

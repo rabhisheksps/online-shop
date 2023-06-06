@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'quantity/increase'
+  get 'quantity/decrease'
   
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
@@ -29,9 +31,9 @@ Rails.application.routes.draw do
     resources :products, only: %i[new create]
   end
 
-  resources :orders do
-    resources :payments, only: %i[new create]
-  end 
+  # resources :orders do
+  #   resources :payments, only: %i[new create]
+  # end 
 
   resources :products do
     member do
@@ -76,7 +78,7 @@ Rails.application.routes.draw do
 
   resources :addresses, except: %i[new create]
   resources :wishlists, except: %i[destroy]
-  resources :wishlist_products, only: %i[index show]
+  resources :wishlist_products, only: %i[index show destroy]
   resources :products, except: %i[new create]
   resources :orders, except: %i[new create]
   resources :categories

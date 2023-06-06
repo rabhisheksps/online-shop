@@ -27,7 +27,7 @@
             <td>$<%= product.tax.round(2) %></td>
             <td><%= product.stock_quantity %></td>
             <td>
-              <% if current_user.cart_items.include?(product) %>
+              <% if current_user.cart.cart_items.include?(product) %>
                 <%= link_to "View Cart", carts_path(cart_id: current_user.cart.id), class: 'btn-sm btn-secondary' %>
               <% else %>
                 <%= link_to 'Add to cart', cart_add_item_path(product_id: product.id, cart_id: current_user.cart.id), class:"btn-sm btn-dark" %>

@@ -52,9 +52,6 @@
           <li class="nav-item">
             <%= link_to 'Sign Up', new_user_registration_path, class: 'nav-link' %>
           </li>
-          <li>
-            <%= button_to "Sign in with Google", user_google_oauth2_omniauth_authorize_path,method: :post, class: '', data: { turbo: false }  %>
-          </li>
         <% end %>
         <li class="nav-item">
           <%= link_to "About Us", about_us_path, class: 'nav-link' %>

@@ -14,11 +14,17 @@
               <li class="list-group-item">Subcategory: <%= subcategory.subcategory_name %></li>
               <li class="list-group-item">Products Listed: <%= subcategory.products.count %></li>
             </ul><br />
-            <div class="card-links">
-              <%= link_to "All Products", subcategory_all_products_path(subcategory.id) ,class:"btn-sm btn-primary"%>
-              <%= link_to "Edit", edit_subcategory_path(subcategory), class:"btn-sm btn-secondary"%>
-              <%= link_to "Delete", subcategory, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-danger"%>
-            </div>
+            <% if current_user.role == "Merchant" %>
+              <div class="card-links">
+                <%= link_to "All Products", subcategory_all_products_path(subcategory.id) ,class:"btn-sm btn-primary"%>
+                <%= link_to "Edit", edit_subcategory_path(subcategory), class:"btn-sm btn-secondary"%>
+                <%= link_to "Delete", subcategory, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-danger"%>
+              </div>
+            <% else %>
+              <div class="page-heading">
+                <%= link_to "All Products", subcategory_all_products_path(subcategory.id) ,class:"btn-sm btn-primary"%>
+              </div>
+            <% end %> 
           </div>
         </div>
       <% end %>
@@ -27,7 +33,7 @@
 <% end %>
 <% if current_user.role == 'Customer' %>
   <div class="page-heading">
-    <%= link_to "Back", categories_path, class:"btn-sm btn-secondary" %>
+    <%= link_to "Back", categories_path, class:"btn-sm btn-dark" %>
   </div>
 <% else %>
   <%= render 'links' %>

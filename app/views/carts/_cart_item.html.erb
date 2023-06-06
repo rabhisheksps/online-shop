@@ -1,0 +1,23 @@
+<tr>
+  <% product = cart_item.product %>
+  <td><%= s_no %></td>
+  <td>
+    <% if cart_item.product.images.attached? %>
+      <%= image_tag(cart_item.product.images.first, class:'img-fluid',style:"height: auto; width:100px;") %>
+    <% end %>
+  </td>
+  <td><%= cart_item.product.product_name %></td>
+  <td><%= cart_item.product.stock_quantity %></td>
+  <td>$<%= cart_item.product.price.round(2) %></td>
+  <td>
+    <%= link_to '+', carts_change_quantity_path(id: cart_item.id, change_type: 'Increase'), data: { turbo_method: :put }, class: "btn-sm btn-dark" %>
+    <turbo-frame id="cart-item-<%= cart_item.id %>-quantity"><%= cart_item.cart_item_quantity %></turbo-frame>
+    <%= link_to '-', carts_change_quantity_path(id: cart_item.id, change_type: 'Decrease'), data: { turbo_method: :put }, class: "btn-sm btn-secondary" %>
+  </td>
+  <td>$<%= product.shipping_fees.round(2) %></td>
+  <td>$<%= product.tax.round(2) %></td>
+  <td>$<turbo-frame id="cart-item-<%= cart_item.id %>-total"><%= ((product.price * cart_item.cart_item_quantity) + product.tax + product.shipping_fees).round(2) %></turbo-frame></td>
+  <td>
+    <%= link_to 'Delete', cart_item_path(id: cart_item.id), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-dark" %>
+  </td>
+</tr>

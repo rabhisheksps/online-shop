@@ -4,7 +4,7 @@
   <% elsif current_user.role == 'Merchant' %>
     <%= render 'merchant_index' %>
   <% else %>
-    <h1>No Products</h1>
+    <h1 class="page-heading">No Products</h1>
   <% end %>
 <% else %>
   <div class="page-heading">

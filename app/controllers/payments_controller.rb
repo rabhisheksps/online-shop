@@ -9,13 +9,13 @@ class PaymentsController < ApplicationController
   end
 
   def checkout
-    # @order = Order.find(params[:order_id])
     total_amount = 0
     product_names = []
     cart_items = current_user.cart.cart_items
     cart_items.each do |cart_item|
       product = cart_item.product
-      total_amount = (product.price * cart_item.cart_item_quantity) + product.tax + product.shipping_fees
+      amount = (product.price * cart_item.cart_item_quantity) + product.tax + product.shipping_fees
+      total_amount += amount
       product_names << product.product_name
     end
 
@@ -24,8 +24,6 @@ class PaymentsController < ApplicationController
     #   source: 'tok_visa'
     # )
     # customer.update(card_token: card.id)
-
-    # puts get_order_images
 
     puts product_names.join(", ")
     puts total_amount
@@ -40,25 +38,19 @@ class PaymentsController < ApplicationController
       product: stripe_product.id,
     })
 
-    stripe_customer = Stripe::Customer.create_source(
-      current_user.stripe_id,
-      {source: 'tok_visa'},
-    )
+    # stripe_customer = Stripe::Customer.create_source(
+    #   current_user.stripe_id,
+    #   {source: 'tok_visa'},
+    # )
 
-    brand = stripe_customer.brand
-    country = stripe_customer.country
-    exp_month = stripe_customer.exp_month
-    exp_year = stripe_customer.exp_year
-    last4 = stripe_customer.last4
+    # brand = stripe_customer.brand
+    # country = stripe_customer.country
+    # exp_month = stripe_customer.exp_month
+    # exp_year = stripe_customer.exp_year
+    # last4 = stripe_customer.last4
 
     # debugger
-    CardInfo.create(user_id: current_user.id, brand: brand, country: country, exp_month: exp_month, exp_year: exp_year, last4: last4) if current_user.card_info.nil?
-  
-    # puts "************************************************************"
-    # puts @product.shipping_fees
-    # puts @product.tax
-    # puts @product.price * @order.order_quantity
-    # puts total_amount
+    # CardInfo.create(user_id: current_user.id, brand: brand, country: country, exp_month: exp_month, exp_year: exp_year, last4: last4) if current_user.card_info.nil?
     
     session = Stripe::Checkout::Session.create(
       success_url: checkout_status_url + "?status=success",
@@ -82,17 +74,13 @@ class PaymentsController < ApplicationController
       mode: 'payment',
     )
     
-    # debugger
     # session_id = session.id
-    redirect_to session.url, allow_other_host: true
-    # @cart.update(payment_status: "Paid")
+    redirect_to(session.url, allow_other_host: true) and return
 
       # charge = Stripe::Charge.create( customer: current_user.stripe_id,
       #   amount: price.unit_amount,
       #   currency: 'usd'
       # )
-
-
       # if charge["captured"]
       #   @cart.update(payment_status: 'Paid')
       # end
@@ -105,49 +93,22 @@ class PaymentsController < ApplicationController
     #   redirect_to root_path, notice: "Payment unsuccessful. Please try again!."
   end
 
-
   def checkout_status
     if params[:status] == 'success'
-      # debugger
-      # session_id = params[:session_id]
-      # payment_session = Stripe::Checkout::Session.retrieve(session_id)
-      # customer_id = checkout_session.customer
-      # customer = Customer.find_or_initialize_by(stripe_customer_id: customer_id)
+      @cart_items = current_user.cart_items
+      @order = current_user.orders.create
+      @cart_items.each do |item|
+        @order.order_products.create!(product_id: item.product.id)
+        @order.save
+      end
 
-      # cards = Stripe::Customer.list_sources(
-      #   customer_id,
-      #   object: 'card'
-      # )
-
-
-      # customer.email = session.customer_details.email
-      # puts customer
-      
       @cart = current_user.cart
       @cart.update(payment_status: 'Paid')
       @cart.cart_items.destroy_all
-      # debugger
-      redirect_to orders_path, notice: "Payment successfully made. Please wait for admin approval."
+
+      redirect_to orders_path, notice: "Payment successfully made."
     else params[:status] == 'failed'
       redirect_to root_path, notice: "Payment failed. Please try again."
     end
   end
-
-  # def success
-  #   redirect_to orders_path, notice: "Payment successfully made. Please wait for admin approval."
-  # end
-  
-  # def cancel
-  #   redirect_to root_path, notice: "Payment failed. Please try again."
-  # end
-
-  private
-
-  # def get_order_images
-  #   images = []
-  #   @product.images.map do |image|
-  #     images << url_for(image)
-  #   end if @product.images.present?
-  #   images
-  # end
 end

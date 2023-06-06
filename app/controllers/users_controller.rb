@@ -4,7 +4,6 @@ class UsersController < ApplicationController
   before_action :find_user, except: %i[index new create about_us]
 
   def index
-    @users = User.all.order("created_at DESC")
   end
   
   def show
@@ -28,7 +27,7 @@ class UsersController < ApplicationController
   
   def update
     if @user.update(user_params)
-      redirect_to @user, flash[:notice] = "User information updated successfully."
+      redirect_to users_path(@user.id), flash[:notice] = "User information updated successfully."
     else
       redirect_to root_path, flash[:notice] = "User information cannot be updated."
     end
@@ -36,16 +35,16 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    redirect_to root_path
+    redirect_to root_path, notice: "You account has been successfully deleted."
   end
 
   def about_us
   end
 
   def confirm
-    @user = User.find_by(confirmation_token: params[:confirmation_token])
-    if @user
-      @user.update(confirmed_at: Time.now)
+    user = User.find_by(confirmation_token: params[:confirmation_token])
+    if user
+      user.update(confirmed_at: Time.now)
       redirect_to root_url, notice: "Your account has been confirmed. Please complete your profile first."
     else
       redirect_to root_url, alert: "Invalid confirmation token."

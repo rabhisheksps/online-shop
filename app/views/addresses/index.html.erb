@@ -9,9 +9,9 @@
       <p>Full Address: <%= address.address_line_1 %>, <%= address.city %>, <%= address.state %>, <%= address.country %></p>
       <p>Area Pincode:<%= address.pincode %></p>
     </div><br />
-    <%= link_to 'Delete Address', address, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-dark' %>
-    <%= link_to 'Back', root_path, class: 'btn-sm btn-secondary' %>
+    <%= link_to 'Delete Address', address, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-secondary' %>
     <%= link_to 'Edit', edit_address_path(address), class: 'btn-sm btn-dark' %>
+    <%= link_to 'Home', root_path, class: 'btn-sm btn-secondary' %>
   <% end %>
 <% end %>
 <div class="page-heading">

@@ -1,21 +1,48 @@
 <div class="page-heading">
   <h1>Shopping Cart</h1>
 </div>
-
 <% if @cart_items.count <= 0 %>
   <h1 class="page-heading">Please add items to your cart first</h1>
+  <div class="page-heading" >
+    <div>
+      <%= link_to "Add Item", products_path, class: 'btn-sm btn-secondary' %>
+      <%= link_to 'Back', root_path, class: 'btn-sm btn-dark' %>
+    </div>
+  </div>
 <% else %>
-<div class="main">
-  <div class="main-row">
-    <% @cart_items.each do |cart_item| %>
-      <%= render 'carts/cart_item', cart_item: cart_item %>
-    <% end %>
+  <div class="main">
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Product Image</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Available Stock</th>
+            <th scope="col">Unit Price</th>
+            <th scope="col">Order Quantity</th>
+            <th scope="col">Shipping Fees</th>
+            <th scope="col">Tax</th>
+            <th scope="col">Total</th> 
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody >
+          <% @cart_items.each_with_index do |cart_item, index| %>
+            <%= render 'carts/cart_item', cart_item: cart_item, s_no: index+1 %>
+          <% end %>
+          <tr>
+            <td colspan="8" class="text-end"><b>Total -</b></td>
+            <td>$100</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div><br />
+  <div class="page-heading">
+    <div>
+      <%= link_to 'Checkout', cart_checkout_path(cart_id: current_user.cart.id), class:"btn-sm btn-dark",  data: { turbo: false }%>
+      <%= link_to 'Back', root_path, class: 'btn-sm btn-secondary' %>
+    </div>
   </div>
-</div>
-<% end %><br />
-<div class="page-heading">
-  <div>
-    <%= link_to 'Checkout', cart_checkout_path(cart_id: current_user.cart.id), class:"btn-sm btn-secondary"%>
-    <%= link_to 'Back', root_path, class: 'btn-sm btn-dark' %>
-  </div>
-</div>
+<% end %>

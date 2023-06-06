@@ -15,11 +15,17 @@
               <li class="list-group-item">Subcategories: <%= category.subcategories.count %></li>
               <li class="list-group-item">Availability: In Stock</li>
             </ul><br />
-            <div class="card-links">
-              <%= link_to "Explore", category_subcategories_path(category.id), class:"btn-sm btn-primary"%>
-              <%= link_to "Edit", edit_category_path(category), class:"btn-sm btn-secondary"%>
-              <%= link_to "Delete", category, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-danger' %>
-            </div>
+            <% if current_user.role == "Merchant" %>
+              <div class="card-links">
+                <%= link_to "Explore", category_subcategories_path(category.id), class:"btn-sm btn-primary"%>
+                <%= link_to "Edit", edit_category_path(category), class:"btn-sm btn-secondary"%>
+                <%= link_to "Delete", category, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-danger' %>
+              </div>
+            <% else %>
+              <div class="page-heading">
+                <%= link_to "Explore", category_subcategories_path(category.id), class:"btn-sm btn-primary"%>
+              </div>
+            <% end %> 
           </div>
         </div>
       <% end %>
@@ -28,7 +34,7 @@
 <% end %>
 <% if current_user.role == 'Customer' %>
   <div class="page-heading">
-    <%= link_to "Home", root_path, class:"btn-sm btn-secondary" %>
+    <%= link_to "Home", root_path, class:"btn-sm btn-dark" %>
   </div>
 <% else %>
   <%= render 'links' %>

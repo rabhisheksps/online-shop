@@ -1,18 +1,29 @@
-<% if @cart.payment_status == "Paid" %>
-  <h2 class="order-heading">List of all your orders.</h2>
-  <% @cart.cart_items.each do |cart_item| %>
-    <div class="jumbotron"><hr />
-      <p>Product Name: <%= cart_item.product.product_name %></p>
-      <p>Order By: <%= current_user.first_name %> <%= current_user.last_name %></p>
-      <p>User Email: <%= current_user.email %></p>
-      <p>User Phone Number: <%= current_user.phone_number %></p>
-      <p>User Address :<%= current_user.addresses.first.address_line_1 %>, <%= current_user.addresses.first.city %>, <%= current_user.addresses.first.state %></p>
-      <p>Order Quantity: <%= cart_item.cart_item_quantity %></p>
-    </div><hr />
-  <% end %>
-<% else%>
-  <h2 class="page-heading">Please make payment of your order first.</h2>
+<% if current_user.cart.payment_status == "Paid" %>
+  <h2 class="order-heading">Order History</h2><hr />
+  <% @orders.each do |order| %>
+    <% order.order_products.each do |item| %>
+      <div class="profile-pic">
+        <div class="jumbotron">
+          <p>Product Name: <%= item.product.product_name %></p>
+          <p>User Email: <%= current_user.email %></p>
+          <p>User Address :<%= current_user.addresses.first.address_line_1 %>, <%= current_user.addresses.first.city %>, <%= current_user.addresses.first.state %></p>
+          <p>Unit Price: $<%= item.product.price %></p>
+          <p>Shipping Fees: $<%= item.product.shipping_fees %></p>
+        </div>
+        <div>
+          <% if item.product.images.attached? %>
+            <%= image_tag(item.product.images.first ,class: "product-image") %>
+          <% end %>
+        </div>   
+      </div><hr /> 
+      <% end %>
+    <% end %>
+  <div class="page-heading">
+    <%= paginate @orders %>
+  </div>
+  <% else%>
+  <h2 class="page-heading">No order found in the order history.</h2>
 <% end %>
 <div class="page-heading">
-  <%= link_to 'Back', root_path, class: 'btn-sm btn-dark' %>
+  <%= link_to 'Home', root_path, class: 'btn-sm btn-dark' %>
 </div>

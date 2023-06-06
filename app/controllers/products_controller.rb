@@ -35,7 +35,7 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    if @product.destroy
+    if @product.destroy!
       redirect_to products_path, notice: "Product is successfully deleted."
     else
       redirect_to root_path, notice: "Product cannot be deleted. Try Again!"
@@ -58,7 +58,7 @@ class ProductsController < ApplicationController
     end
     @favorite_item = wishlist.wishlist_products.create(product_id: @product.id)
     if @favorite_item.save
-      redirect_to root_path, notice: "Product successfully added to your wishlist!"
+      redirect_to wishlist_products_path, notice: "Product successfully added to your wishlist!"
     else
       redirect_to root_path, notice: "Product is already in your wishlist!"
     end

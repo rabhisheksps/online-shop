@@ -7,9 +7,9 @@
     <p>Profile Type: <%= @user.role %></p>
     <p>Email: <%= @user.email %></p>
     <p>Phone Number: <%= @user.phone_number %></p>
-    <p>Address :<%= @user&.addresses&.first&.address_line_1 || "" %></p>
-    <p>Area Pincode: <%= @user&.addresses&.first&.pincode || "" %></p>
-  </div><br/>
+    <p>Address :<%= @user&.addresses&.first&.address_line_1 || "Not filled yet" %></p>
+    <p>Area Pincode: <%= @user&.addresses&.first&.pincode || "Not filled yet" %></p>
+  </div>
   <div>
     <% if @user.profile_picture.persisted? %>
       <%= image_tag @user.profile_picture, class: "profile-image"  %>
@@ -18,7 +18,7 @@
 </div><br /><br />
 <div class="page-heading">
   <div>  
-    <%= link_to "Back", root_path,  class: 'btn-sm btn-dark' %>
+    <%= link_to "Home", root_path,  class: 'btn-sm btn-dark' %>
     <%= link_to "Delete my account", @user, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-secondary' %>
   </div>
 </div>

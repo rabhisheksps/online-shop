@@ -12,12 +12,14 @@ class Product < ApplicationRecord
   has_many_attached :images, dependent: :destroy
   belongs_to :category
   belongs_to :subcategory
-  has_many :orders, dependent: :destroy 
-  belongs_to :user, optional: true #, class_name: "merchant", foreign_key: "merchant_id"
+  belongs_to :user, optional: true
 
   has_many :wishlist_products
   has_many :wishlists, through: :wishlist_products
 
-  has_many :cart_items
-  has_many :carts, through: :cart_items
+  has_many :cart_items, dependent: :destroy
+  has_many :carts, through: :cart_items, dependent: :destroy
+
+  has_many :order_products, dependent: :destroy
+  has_many :orders, through: :order_products, dependent: :destroy
 end
