@@ -36,10 +36,19 @@ class CartsController < ApplicationController
   end
 
   def update
-    @cart_item = current_user.cart.cart_items.find(params[:id])
+    @cart_item = current_user.cart_items.find(params[:id])
     @cart_item.product.update(product_order_quantity: params[:product_order_quantity])
     respond_to do |format|
       format.js
+    end
+  end
+
+  def change_quantity
+    cart_item = current_user.cart_items.find(params[:id])
+    if params[:change_type] == 'Increase'
+      cart_item.update(cart_item_quantity: cart_item_quantity + 1)
+    elsif params[:change_type] == 'Decrease'
+      cart_item.update(cart_item_quantity: cart_item_quantity - 1)
     end
   end
 

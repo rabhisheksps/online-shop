@@ -12,9 +12,8 @@ class PaymentsController < ApplicationController
     # @order = Order.find(params[:order_id])
     total_amount = 0
     product_names = []
-    @cart = current_user.cart
-    @cart_items = @cart.cart_items
-    @cart_items.each do |cart_item|
+    cart_items = current_user.cart.cart_items
+    cart_items.each do |cart_item|
       product = cart_item.product
       total_amount = (product.price * cart_item.cart_item_quantity) + product.tax + product.shipping_fees
       product_names << product.product_name
@@ -29,9 +28,10 @@ class PaymentsController < ApplicationController
     # puts get_order_images
 
     puts product_names.join(", ")
+    puts total_amount
 
     stripe_product = Stripe::Product.create({
-      name: product_names[0]
+      name: 'Ordered Products'
     })
     
     price = Stripe::Price.create({
@@ -41,7 +41,7 @@ class PaymentsController < ApplicationController
     })
 
     stripe_customer = Stripe::Customer.create_source(
-      'cus_Nu9c8gld60Kxx4',
+      current_user.stripe_id,
       {source: 'tok_visa'},
     )
 
@@ -64,7 +64,6 @@ class PaymentsController < ApplicationController
       success_url: checkout_status_url + "?status=success",
       cancel_url: checkout_status_url + "?status=failed",
       customer_email: current_user.email,
-      billing_address_collection: 'required',
       phone_number_collection: {enabled: false},
       line_items: [{
         price: price.id,
@@ -83,7 +82,7 @@ class PaymentsController < ApplicationController
       mode: 'payment',
     )
     
-    debugger
+    # debugger
     # session_id = session.id
     redirect_to session.url, allow_other_host: true
     # @cart.update(payment_status: "Paid")
@@ -123,11 +122,11 @@ class PaymentsController < ApplicationController
 
       # customer.email = session.customer_details.email
       # puts customer
-
+      
       @cart = current_user.cart
       @cart.update(payment_status: 'Paid')
       @cart.cart_items.destroy_all
-      debugger
+      # debugger
       redirect_to orders_path, notice: "Payment successfully made. Please wait for admin approval."
     else params[:status] == 'failed'
       redirect_to root_path, notice: "Payment failed. Please try again."
