@@ -1,10 +1,11 @@
 class ProductsController < ApplicationController
 
-  before_action :authenticate_user!, except: %i[index]
+  before_action :authenticate_user!
   before_action :find_product, only: %i[show edit update destroy add_to_wishlist]
 
   def index
     @products = Product.where(approval_status: 'Approved').page(params[:page])
+    @cart_product_ids = current_user.cart_items.pluck(:product_id)
   end
 
   def new
@@ -21,6 +22,7 @@ class ProductsController < ApplicationController
   end
 
   def show
+    @wishlist_product_ids = current_user.wishlist_products.includes(:product, product: [images_attachments: :blob]).pluck(:product_id)
   end
 
   def edit

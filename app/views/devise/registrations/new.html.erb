@@ -1,6 +1,6 @@
 <h2 class="page-heading">Sign Up Form</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name),data: { turbo: false }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 <div>
   <div class="field">
@@ -46,8 +46,11 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div><br />
 
+  <%= flash[:recaptcha_error] %>
+  <%= recaptcha_tags %><br />
+
   <div>
     <%= f.button "Sign Up", class: "btn btn-sm btn-primary" %>
-  </div><br />
+  </div>  
 </div>
 <% end %>

@@ -31,10 +31,9 @@
           <% @cart_items.each_with_index do |cart_item, index| %>
             <%= render 'carts/cart_item', cart_item: cart_item, s_no: index+1 %>
           <% end %>
-          <tr>
             <td colspan="8" class="text-end"><b>Total -</b></td>
-            <td>$100</td>
-          </tr>
+            <td>$<turbo-frame id="cart-items-checkout-total"><%= @checkout_total %></turbo-frame>
+            </td>
         </tbody>
       </table>
     </div>

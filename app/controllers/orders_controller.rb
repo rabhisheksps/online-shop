@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
   before_action :find_order, except: %i[index new create destroy]
 
   def index
-    @orders = current_user.orders.includes(:order_products).order('created_at DESC').page(params[:page])
+    @orders = current_user.orders.includes(products: [images_attachments: :blob]).order('created_at DESC').page(params[:page])
   end
 
   def new

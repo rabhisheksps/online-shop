@@ -22,7 +22,7 @@
   <div>
     <%= link_to "Back", products_path, class:"btn-sm btn-dark" %>
     <% if current_user.role == "Customer" %>
-      <% if !current_user.wishlist.wishlist_products.include?(@product) %>
+      <% if !@wishlist_product_ids.include?(@product.id) %>
         <%= link_to "Add to wishlist", add_to_wishlist_product_path(@product), method: :post, class: "btn-sm btn-secondary" %>
       <% end %>
     <% end %>

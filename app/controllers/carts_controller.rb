@@ -1,11 +1,12 @@
 class CartsController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :find_cart, except: %i[index new create change_quantity]
+  before_action :find_cart, except: %i[index new create]
 
   def index
     @cart = current_user.cart
-    @cart_items = current_user.cart.cart_items.includes(product: [images_attachments: :blob])
+    @cart_items = current_user.cart_items.includes(product: [images_attachments: :blob])
+    @checkout_total = @cart.checkout_total
   end
 
   def new
@@ -37,14 +38,10 @@ class CartsController < ApplicationController
     if params[:change_type] == 'Increase'
       @cart_item.update(cart_item_quantity: @cart_item.cart_item_quantity + 1)
     elsif params[:change_type] == 'Decrease'
-      @cart_item.update(cart_item_quantity: @cart_item.cart_item_quantity - 1)
-      # product_total
+      @cart_item.update(cart_item_quantity: @cart_item.cart_item_quantity - 1) unless (@cart_item.cart_item_quantity - 1).zero?
     end
+    @checkout_total = @cart.checkout_total
   end
-
-  # def product_total
-  #   @cart_item = current_user.cart_items.find(params[:id])
-  # end
 
   private
 

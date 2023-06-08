@@ -8,22 +8,6 @@ class UsersController < ApplicationController
   
   def show
   end
-
-  def create
-    @user = User.new(user_params)
-    if @user.save
-      # UserMailer.confirmation_email(@user).deliver_now
-      @customer = Stripe::Customer.create(
-        email: params[:stripeEmail],
-        card: card_token,
-        currency: 'usd',
-        description: 'My First Customer.'
-      )
-      redirect_to root_url, notice: "Please check your email to confirm your account."
-    else
-      render :new
-    end
-  end
   
   def update
     if @user.update(user_params)
@@ -54,7 +38,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:user).require(:image, :first_name, :last_name, :email, :password, :password_confirmation, :phone_number, :dob, :role, card_token: stripe_params["stripeToken"])
+    params.permit(:user).require(:image, :first_name, :last_name, :email, :password, :password_confirmation, :phone_number, :dob, :role)
   end
 
   def find_user

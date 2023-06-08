@@ -6,9 +6,10 @@
       <%= image_tag(cart_item.product.images.first, class:'img-fluid',style:"height: auto; width:100px;") %>
     <% end %>
   </td>
-  <td><%= cart_item.product.product_name %></td>
-  <td><%= cart_item.product.stock_quantity %></td>
-  <td>$<%= cart_item.product.price.round(2) %></td>
+  <% cart_item.product = product %>
+  <td><%= link_to product.product_name, product_path(product),class: 'product-link' %></td>
+  <td><%= product.stock_quantity %></td>
+  <td>$<%= product.price.round(2) %></td>
   <td>
     <%= link_to '+', carts_change_quantity_path(id: cart_item.id, change_type: 'Increase'), data: { turbo_method: :put }, class: "btn-sm btn-dark" %>
     <turbo-frame id="cart-item-<%= cart_item.id %>-quantity"><%= cart_item.cart_item_quantity %></turbo-frame>

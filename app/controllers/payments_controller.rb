@@ -11,7 +11,7 @@ class PaymentsController < ApplicationController
   def checkout
     total_amount = 0
     product_names = []
-    cart_items = current_user.cart.cart_items
+    cart_items = current_user.cart_items
     cart_items.each do |cart_item|
       product = cart_item.product
       amount = (product.price * cart_item.cart_item_quantity) + product.tax + product.shipping_fees

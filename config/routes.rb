@@ -86,11 +86,11 @@ Rails.application.routes.draw do
   get '/search_product', to: 'products#search_product'
   get '/my_products', to: 'products#my_products'
   get '/about_us', to: "users#about_us"
-  post 'checkout', to: 'payments#checkout'
-  post 'webhooks/payments/update_status', to: 'webhooks/payments#update_status'
-  post 'webhooks/payments/cancel', to: 'webhooks/payments#cancel'
+  # post 'webhooks/payments/update_status', to: 'webhooks/payments#update_status'
+  # post 'webhooks/payments/cancel', to: 'webhooks/payments#cancel'
   get 'checkout_status', to: 'payments#checkout_status'
   resources :cart_items, only: %i[edit update]
   get 'user_card_info', to: 'card_infos#show'
   put 'carts/change_quantity', to: 'carts#change_quantity'
+  post '/webhooks/:source', to: 'webhooks#create'
 end

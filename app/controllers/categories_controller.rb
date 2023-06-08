@@ -4,7 +4,7 @@ class CategoriesController < ApplicationController
   before_action :find_category, except: %i[index new create]
 
   def index
-    @categories = Category.where(approval_status: 'Approved').order(:category_name).page(params[:page])
+    @categories = Category.where(approval_status: 'Approved').includes(image_attachment: :blob).order(:category_name).page(params[:page])
   end
 
   def new

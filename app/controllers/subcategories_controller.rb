@@ -1,11 +1,11 @@
 class SubcategoriesController < ApplicationController
-  before_action :authenticate_user!, except: %i[new create ]
+  before_action :authenticate_user!
   before_action :find_category, only: %i[index new create]
   before_action :find_subcategory, except: %i[index new create ]
 
   def index
     @category = Category.find(params[:category_id])
-    @subcategories = @category.subcategories.where(approval_status: 'Approved').order(:subcategory_name).page(params[:page])
+    @subcategories = @category.subcategories.where(approval_status: 'Approved').includes(image_attachment: :blob).order(:subcategory_name).page(params[:page])
   end
 
   def new

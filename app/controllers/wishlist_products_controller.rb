@@ -1,6 +1,8 @@
 class WishlistProductsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
-    @wishlist_products = current_user.wishlist_products.page(params[:page])
+    @wishlist_products = current_user.wishlist_products.includes(:product).page(params[:page])
   end
 
   def new
