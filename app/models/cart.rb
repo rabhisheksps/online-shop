@@ -3,6 +3,7 @@ class Cart < ApplicationRecord
   belongs_to :cart, optional: true
   has_many :cart_items
   has_many :products, through: :cart_items
+  # before_save :check_order_quantity
 
   # before_save :subtotal, :total 
 
@@ -31,4 +32,12 @@ class Cart < ApplicationRecord
     end
     total_amount.round(2)
   end
+
+  # def check_order_quantity
+  #   cart_items.includes(:product).each do |cart_item|
+  #     if cart_item.product.stock_quantity <= cart.cart_item_quantity
+  #       redirect_to products_path, notice: "Order quantity must be less than available stock"
+  #     end
+  #   end
+  # end
 end

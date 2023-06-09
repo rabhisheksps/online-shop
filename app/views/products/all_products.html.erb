@@ -16,9 +16,11 @@
               <li class="list-group-item">Product Vendor: <%= product.vendor %></li>
               <li class="list-group-item">Stock Available: <%= product.stock_quantity %></li>
             </ul>
-            <div class="buy">
-              <%= link_to 'Add to cart', cart_add_item_path(product_id: product.id, cart_id: current_user.cart.id), class:"btn-sm btn-dark" %>
-            </div>
+            <% if current_user.role == 'Customer' %>
+              <div class="buy">
+                <%= link_to 'Add to cart', cart_add_item_path(product_id: product.id, cart_id: current_user.cart.id), class:"btn-sm btn-dark" %>
+              </div>
+            <% end %>
           </div>
         </div>
       <% end %>
@@ -30,7 +32,7 @@
     <%= link_to "New Product", new_product_path,  class: 'btn-sm btn-dark' %>
     <%= link_to "Home", root_path, class:"btn-sm btn-secondary" %>
   </div>
-</div>
+</div><br />
 <% if @products.count >= 3 %>
   <div class="page-heading">
     <%= paginate @products %>

@@ -8,7 +8,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable,
          :omniauthable, omniauth_providers: [:google_oauth2]
 
-  validates_presence_of :first_name, :last_name, :phone_number, :role
+  validates_presence_of :password, on: :create, length: {minimum:8, maximum:8}
+  validate :password_regex
+  validates_presence_of :first_name, :last_name, :email, :phone_number, :phone_number, :role
   validates_uniqueness_of :email, :phone_number
   enum :role, {Customer: 'Customer', Merchant: 'Merchant'}
 
@@ -26,19 +28,18 @@ class User < ApplicationRecord
   has_one :card_info
   has_many :cart_items, through: :cart
 
+  private
+
+  def password_regex
+    return if password.blank? || password =~ /\A(?=.*\d)(?=.*[A-Z])(?=.*\W)[^ ]{7,}\z/
+    errors.add :password,
+               'should have more than 6 characters including 1 uppercase letter, 1 number, 1 special character'
+  end
+
   def create_stripe_customer    
     customer = Stripe::Customer.create(email: email)
     self.update(stripe_id: customer.id)
   end
- 
-  # def self.from_omniauth(auth)
-  #   where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-  #     user.email = auth.info.email
-  #     user.password = Devise.friendly_token [0, 20]
-  #     user.full_name = auth.info.first_name   #assuming the user model has a name
-  #     user.avatar_url = auth.info.image #assuming the user model has an image
-  #   end
-  # end
 
   def create_cart
     self.cart = Cart.create(user_id: self.id)

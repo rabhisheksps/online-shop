@@ -68,7 +68,7 @@ class ProductsController < ApplicationController
 
   def all_products
     @subcategory = Subcategory.find(params[:subcategory_id])
-    @products = @subcategory.products.page(params[:page])
+    @products = @subcategory.products.includes([images_attachments: :blob]).page(params[:page])
   end
 
   private

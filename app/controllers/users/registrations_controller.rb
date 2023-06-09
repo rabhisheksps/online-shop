@@ -1,6 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters
-
   # def update_resource(resource, params)
   #   if resource.provider == 'google_oauth2'
   #     params.delete('current_password')
@@ -13,7 +12,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def create
     if verify_recaptcha
-      flash[:success] = "An email with confirmation instructions has been sent to your email account."
       super
     else
       build_resource(sign_up_params)

@@ -1,5 +1,7 @@
 class PaymentsController < ApplicationController
-  include Rails.application.routes.url_helpers
+
+  before_action :authenticate_user!, only: [:checkout, :new, :create, :success_url, :cancel_url]
+
   def new
     order = Order.find(params[:order_id])
     @payment = Payment.new(order_id: params{:order.id})
@@ -10,13 +12,17 @@ class PaymentsController < ApplicationController
 
   def checkout
     total_amount = 0
-    product_names = []
-    cart_items = current_user.cart_items
+    @product_names = []
+    cart_items = current_user.cart_items.includes(:product)
     cart_items.each do |cart_item|
       product = cart_item.product
+      if product.stock_quantity <= cart_item.cart_item_quantity
+        flash[:notice] = "Order quantity must be less than available stock"
+        return
+      end
       amount = (product.price * cart_item.cart_item_quantity) + product.tax + product.shipping_fees
       total_amount += amount
-      product_names << product.product_name
+      @product_names << product.product_name
     end
 
     # card = customer.create_source(
@@ -25,11 +31,12 @@ class PaymentsController < ApplicationController
     # )
     # customer.update(card_token: card.id)
 
-    puts product_names.join(", ")
+    puts @product_names.join(", ")
+    puts @product_names.type
     puts total_amount
 
     stripe_product = Stripe::Product.create({
-      name: 'Ordered Products'
+      name: @product_names
     })
     
     price = Stripe::Price.create({
@@ -53,8 +60,8 @@ class PaymentsController < ApplicationController
     # CardInfo.create(user_id: current_user.id, brand: brand, country: country, exp_month: exp_month, exp_year: exp_year, last4: last4) if current_user.card_info.nil?
     
     session = Stripe::Checkout::Session.create(
-      success_url: checkout_status_url + "?status=success",
-      cancel_url: checkout_status_url + "?status=failed",
+      success_url: checkout_success_url,
+      cancel_url: checkout_cancel_url,
       customer_email: current_user.email,
       phone_number_collection: {enabled: false},
       line_items: [{
@@ -93,22 +100,22 @@ class PaymentsController < ApplicationController
     #   redirect_to root_path, notice: "Payment unsuccessful. Please try again!."
   end
 
-  def checkout_status
-    if params[:status] == 'success'
-      @cart_items = current_user.cart_items
-      @order = current_user.orders.create
-      @cart_items.each do |item|
-        @order.order_products.create!(product_id: item.product.id)
-        @order.save
-      end
-
-      @cart = current_user.cart
-      @cart.update(payment_status: 'Paid')
-      @cart.cart_items.destroy_all
-
-      redirect_to orders_path, notice: "Payment successfully made."
-    else params[:status] == 'failed'
-      redirect_to root_path, notice: "Payment failed. Please try again."
+  def checkout_success
+    @cart_items = current_user.cart_items
+    @order = current_user.orders.create
+    @cart_items.each do |item|
+      @order.order_products.create!(product_id: item.product.id)
+      @order.save
     end
+
+    @cart = current_user.cart
+    @cart.update(payment_status: 'Paid')
+    @cart.cart_items.destroy_all
+
+    redirect_to orders_path, notice: "Payment successfully made. Thanks for choosing Ekart."
+  end
+
+  def checkout_cancel
+    redirect_to '/' , notice: "Payment failed. Please try again."
   end
 end

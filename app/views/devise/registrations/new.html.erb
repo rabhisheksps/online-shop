@@ -47,7 +47,7 @@
   </div><br />
 
   <%= flash[:recaptcha_error] %>
-  <%= recaptcha_tags %><br />
+  <%= recaptcha_tags noscript: false %><br />
 
   <div>
     <%= f.button "Sign Up", class: "btn btn-sm btn-primary" %>

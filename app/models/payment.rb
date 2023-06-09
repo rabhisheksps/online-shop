@@ -1,34 +1,15 @@
 class Payment < ApplicationRecord
   attr_accessor :credit_card_number, :credit_card_exp_month, :credit_card_exp_year, :credit_card_cvv
   belongs_to :order
-  before_validation :create_on_stripe
+  # before_validation :create_on_stripe
+  # before_checkout :check_order_quantity
 
-  def create_on_stripe
-    token = get_token
-    params = { amount: @order.total, currency: 'usd', source: token}
-    response = Stripe::Charge.create(params)
-    self.stripe_id = response.id
-  end
-
-  def get_token
-    Stripe::Token.create({
-      card: {
-        number: credit_card_number,
-        exp_month: credit_card_exp_month,
-        exp_year: credit_card_exp_year,
-        cvc: credit_card_cvv,
-      }
-    })
-  end
-
-  def create_payment
-    params = {
-      order_id: payment.order.id,
-      credit_card_number: credit_card_number,
-      credit_card_exp_month: credit_card_exp_month,
-      credit_card_exp_year: credit_card_exp_year,
-      credit_card_cvv: credit_card_cvv
-    }
-    Payment.create!(params)
-  end
+  # def check_order_quantity
+  #   cart_items = current_user.cart_items
+  #   cart_items.includes(:product).each do |cart_item|
+  #     if cart_item.product.stock_quantity <= cart.cart_item_quantity
+  #       redirect_to products_path, notice: "Order quantity must be less than available stock"
+  #     end
+  #   end
+  # end
 end
