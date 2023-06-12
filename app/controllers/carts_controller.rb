@@ -6,6 +6,7 @@ class CartsController < ApplicationController
   def index
     @cart = current_user.cart
     @cart_items = current_user.cart_items.includes(product: [images_attachments: :blob])
+    check_product_quantity
     @checkout_total = @cart.checkout_total
   end
 
@@ -47,5 +48,11 @@ class CartsController < ApplicationController
 
   def find_cart
     @cart = current_user.cart
+  end
+
+  def check_product_quantity
+    current_user.cart_items.includes(:product).each do |cart_item|
+      condition = cart_item.product.stock_quantity <= cart_item.cart_item_quantity
+    end
   end
 end

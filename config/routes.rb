@@ -83,14 +83,17 @@ Rails.application.routes.draw do
   resources :orders, except: %i[new create]
   resources :categories
   resources :subcategories, except: %i[new create index]
-  get '/search_product', to: 'products#search_product'
+  get '/search_products', to: 'products#search_products'
   get '/my_products', to: 'products#my_products'
   get '/about_us', to: "users#about_us"
   # post 'webhooks/payments/update_status', to: 'webhooks/payments#update_status'
   # post 'webhooks/payments/cancel', to: 'webhooks/payments#cancel'
-  get 'checkout_status', to: 'payments#checkout_status'
+  # get 'checkout_status', to: 'payments#checkout_status'
   resources :cart_items, only: %i[edit update]
   get 'user_card_info', to: 'card_infos#show'
   put 'carts/change_quantity', to: 'carts#change_quantity'
   post '/webhooks/:source', to: 'webhooks#create'
+  get 'checkout_success', to: 'payments#checkout_success'
+  get 'checkout_cancel', to: 'payments#checkout_cancel'
+  post 'check_product_quantity', to: 'carts#check_product_quantity'
 end

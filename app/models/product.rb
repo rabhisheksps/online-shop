@@ -12,6 +12,7 @@ class Product < ApplicationRecord
   has_many_attached :images, dependent: :destroy
   belongs_to :category
   belongs_to :subcategory
+  belongs_to :country
   belongs_to :user, optional: true
 
   has_many :wishlist_products

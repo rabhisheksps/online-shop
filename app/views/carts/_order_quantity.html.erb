@@ -1,0 +1,3 @@
+<%= link_to '+', carts_change_quantity_path(id: cart_item.id, change_type: 'Increase'), data: { turbo_method: :put }, class: "btn-sm btn-dark" %>
+<turbo-frame id="cart-item-<%= cart_item.id %>-quantity"><%= cart_item.cart_item_quantity %></turbo-frame>
+<%= link_to '-', carts_change_quantity_path(id: cart_item.id, change_type: 'Decrease'), data: { turbo_method: :put }, class: "btn-sm btn-secondary" %>

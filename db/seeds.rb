@@ -9,16 +9,21 @@
 require 'faker'
 require 'open-uri'
 
-Category.create(category_name: "Men")
-Category.create(category_name: "Women")
-Category.create(category_name: "Children")
+# Category.create(category_name: "Men")
+# Category.create(category_name: "Women")
+# Category.create(category_name: "Children")
 
-Subcategory.create(subcategory_name: "Suits", category_id: 1)
-Subcategory.create(subcategory_name: "Jeans", category_id: 1)
-Subcategory.create(subcategory_name: "Shoes", category_id: 2)
-Subcategory.create(subcategory_name: "Tops", category_id: 2)
-Subcategory.create(subcategory_name: "Tshirts", category_id: 3)
-Subcategory.create(subcategory_name: "Slippers", category_id: 3)
+# Subcategory.create(subcategory_name: "Suits", category_id: 1)
+# Subcategory.create(subcategory_name: "Jeans", category_id: 1)
+# Subcategory.create(subcategory_name: "Shoes", category_id: 2)
+# Subcategory.create(subcategory_name: "Tops", category_id: 2)
+# Subcategory.create(subcategory_name: "Tshirts", category_id: 3)
+# Subcategory.create(subcategory_name: "Slippers", category_id: 3)
+
+# 20.times do
+#   country = Faker::Address.country
+#   Country.create(name: country)
+# end
 
 10.times do
   product_name = Faker::Commerce.unique.product_name
@@ -40,4 +45,4 @@ Subcategory.create(subcategory_name: "Slippers", category_id: 3)
     product.images.attach({io: image, filename: "faker_image.jpg"})
   end
 end
-AdminUser.create!(email: 'admin@ekart.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+# AdminUser.create!(email: 'admin@ekart.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

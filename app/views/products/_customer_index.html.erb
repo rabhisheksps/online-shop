@@ -11,6 +11,7 @@
         <th scope="col">Product Vendor: </th>
         <th scope="col">Product Shipping Fees: </th>
         <th scope="col">Added Tax: </th>
+        <th scope="col">Warehouse Country: </th>
         <th scope="col">Stock Available: </th>
         <th colspan="3">Shopping Cart:</th>
       </tr>
@@ -25,12 +26,13 @@
             <td><%= product.vendor%></td>
             <td>$<%= product.shipping_fees.round(2)%> $</td>
             <td>$<%= product.tax.round(2) %></td>
+            <td><%= product&.country&.name || "NA" %></td>
             <td><%= product.stock_quantity %></td>
             <td>
               <% if @cart_product_ids.include?(product.id) %>
-                <%= link_to "View Cart", carts_path(cart_id: current_user.cart.id), class: 'btn-sm btn-secondary' %>
+                <%= link_to '<i class="fas fa-shopping-cart"></i> View Cart'.html_safe , carts_path(cart_id: current_user.cart.id), class: 'btn-sm btn-secondary' %>
               <% else %>
-                <%= link_to 'Add to cart', cart_add_item_path(product_id: product.id, cart_id: current_user.cart.id), class:"btn-sm btn-dark" %>
+                <%= link_to '<i class="fas fa-shopping-cart"></i> Add to cart'.html_safe , cart_add_item_path(product_id: product.id, cart_id: current_user.cart.id), class:"btn-sm btn-dark" %>
               <% end %>
             </td>
           </tr>

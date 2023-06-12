@@ -20,7 +20,7 @@
             <td><%= product.price%> $</td>
             <td><%= product.material%></td>
             <td><%= product.vendor%></td>
-            <td><%= link_to 'Remove', wishlist_product_path(wishlist_product), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-dark" %></td> 
+            <td><%= link_to '<i class="fas fa-regular fa-trash"></i>  Remove'.html_safe, wishlist_product_path(wishlist_product), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-dark" %></td> 
           </tr>
       <% end %>
     </tbody>

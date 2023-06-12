@@ -1,5 +1,4 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :configure_permitted_parameters
   # def update_resource(resource, params)
   #   if resource.provider == 'google_oauth2'
   #     params.delete('current_password')
