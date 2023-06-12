@@ -199,3 +199,9 @@
     justify-content: center;
     gap: 5px;
   }
+
+  .shared-links{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
