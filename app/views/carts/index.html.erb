@@ -5,8 +5,8 @@
   <h1 class="page-heading">Please add items to your cart first</h1>
   <div class="page-heading" >
     <div>
-      <%= link_to "Add Item", products_path, class: 'btn-sm btn-secondary' %>
-      <%= link_to 'Back', root_path, class: 'btn-sm btn-dark' %>
+      <%= link_to '<i class="fas fa-light fa-plus"></i> Add Item'.html_safe, products_path, class: 'btn-sm btn-secondary' %>
+      <%= link_to '<i class="fas fa-solid fa-left"></i> Back'.html_safe , root_path, class: 'btn-sm btn-dark' %>
     </div>
   </div>
 <% else %>
@@ -18,7 +18,6 @@
             <th scope="col">S.No</th>
             <th scope="col">Product Image</th>
             <th scope="col">Product Name</th>
-            <th scope="col">Available Stock</th>
             <th scope="col">Unit Price</th>
             <th scope="col">Order Quantity</th>
             <th scope="col">Shipping Fees</th>
@@ -40,8 +39,12 @@
   </div><br />
   <div class="page-heading">
     <div>
-      <%= link_to 'Checkout', cart_checkout_path(cart_id: current_user.cart.id), class:"btn-sm btn-dark",  data: { turbo: false }%>
-      <%= link_to 'Back', root_path, class: 'btn-sm btn-secondary' %>
+      <% if current_user.addresses.first.nil? %>
+        <p class="address-notice">Please fill your address details first </p>
+      <% else %>
+        <%= link_to '<i class="fas fa-duotone fa-bag-shopping"></i> Checkout'.html_safe, cart_checkout_path(cart_id: current_user.cart.id), class:"btn-sm btn-dark",  data: { turbo: false }%>
+      <% end %>
+      <%= link_to '<i class="fas fa-thin fa-house"></i> Home'.html_safe, root_path, class: 'btn-sm btn-secondary' %>
     </div>
   </div>
 <% end %>

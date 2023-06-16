@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
   before_action :find_product, only: %i[show edit update destroy add_to_wishlist]
 
   def index
-    @products = Product.includes(:country).where(approval_status: 'Approved').page(params[:page])
+    @products = Product.includes(:country).where(approval_status: 'Approved').order("created_at DESC").page(params[:page])
     @cart_product_ids = current_user.cart_items.pluck(:product_id)
   end
 
@@ -45,11 +45,11 @@ class ProductsController < ApplicationController
   end
   
   def search_products
-    @search_products = Product.where("material ILIKE ? OR vendor ILIKE ? country ILIKE ?", "%" + params[:q] + "%", "%" + params[:q] + "%",  "%" + params[:q] + "%")
+    @search_products = Product.where("product_name ILIKE ? OR material ILIKE ? OR vendor ILIKE ?", "%" + params[:q] + "%", "%" + params[:q] + "%", "%" + params[:q] + "%")
   end 
 
   def my_products
-    @my_products = current_user.products.includes(:country).order("created_at DESC")
+    @my_products = current_user.products.includes(:country).order("created_at DESC").page(params[:page])
   end
 
   def add_to_wishlist

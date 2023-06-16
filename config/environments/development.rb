@@ -97,6 +97,7 @@ Rails.application.configure do
   RECAPTCHA_SECRET_KEY= '6LeBTXwmAAAAAOvsNj3N-E3xGjqJkhSsm8fGoAA-'
 
 
-  config.hosts << "9be8-182-75-107-70.ngrok-free.app"
-  # Rails.application.default_url_options ={ host: 'd13d-182-75-107-70.ngrok-free.app'}
+  config.hosts << "2bfa-182-75-107-70.ngrok-free.app"
+  config.web_console.whitelisted_ips = ['182.75.107.70']
+  # Rails.application.default_url_options ={ host: 'e08c-182-75-107-70.ngrok-free.app'}
 end

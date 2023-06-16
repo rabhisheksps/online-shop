@@ -16,13 +16,13 @@
             </ul><br />
             <% if current_user.role == "Merchant" %>
               <div class="card-links">
-                <%= link_to "All Products", subcategory_all_products_path(subcategory.id) ,class:"btn-sm btn-primary"%>
-                <%= link_to "Edit", edit_subcategory_path(subcategory), class:"btn-sm btn-secondary"%>
-                <%= link_to "Delete", subcategory, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-danger"%>
+                <%= link_to '<i class="fas fa-thin fa-magnifying-glass"></i> All Products'.html_safe , subcategory_all_products_path(subcategory.id) ,class:"btn-sm btn-dark"%>
+                <%= link_to '<i class="fas fa-sharp fa-light fa-trash"></i> Delete'.html_safe , subcategory, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-danger"%>
+                <%= link_to '<i class="fas fa-edit"></i> Edit'.html_safe  , edit_subcategory_path(subcategory), class:"btn-sm btn-dark"%>
               </div>
             <% else %>
               <div class="page-heading">
-                <%= link_to "All Products", subcategory_all_products_path(subcategory.id) ,class:"btn-sm btn-primary"%>
+                <%= link_to '<i class="fas fa-thin fa-magnifying-glass"></i> Explore'.html_safe, subcategory_all_products_path(subcategory.id) ,class:"btn-sm btn-dark"%>
               </div>
             <% end %> 
           </div>
@@ -33,7 +33,7 @@
 <% end %>
 <% if current_user.role == 'Customer' %>
   <div class="page-heading">
-    <%= link_to "Back", categories_path, class:"btn-sm btn-dark" %>
+    <%= link_to '<i class="fas fa-light fa-backward"></i> Back'.html_safe, categories_path, class:"btn-sm btn-dark" %>
   </div>
 <% else %>
   <%= render 'links' %>

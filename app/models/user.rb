@@ -8,10 +8,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable,
          :omniauthable, omniauth_providers: [:google_oauth2]
 
-  validates_presence_of :password, on: :create, length: {minimum:8, maximum:8}
+  validates :password, on: :create, presence: true, length: {minimum:8, maximum:16}
   validate :password_regex
   validates_presence_of :first_name, :last_name, :email, :phone_number, :phone_number, :role
   validates_uniqueness_of :email, :phone_number
+  validates :phone_number, on: :create, length: {minimum: 10, maximum: 10}
   enum :role, {Customer: 'Customer', Merchant: 'Merchant'}
 
   has_one_attached :profile_picture, dependent: :destroy

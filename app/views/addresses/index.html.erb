@@ -9,11 +9,11 @@
       <p>Full Address: <%= address.address_line_1 %>, <%= address.city %>, <%= address.state %>, <%= address.country %></p>
       <p>Area Pincode:<%= address.pincode %></p>
     </div><br />
-    <%= link_to 'Delete Address', address, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-secondary' %>
-    <%= link_to 'Edit', edit_address_path(address), class: 'btn-sm btn-dark' %>
-    <%= link_to 'Home', root_path, class: 'btn-sm btn-secondary' %>
+    <%= link_to '<i class="fas fa-edit"></i> Edit'.html_safe , edit_address_path(address), class: 'btn-sm btn-dark' %>
+    <%= link_to '<i class="fas fa-sharp fa-light fa-trash"></i> Delete'.html_safe, address, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-danger' %>
+    <% end %>
   <% end %>
-<% end %>
-<div class="page-heading">
-  <%= link_to 'Add New Address', new_user_address_path(:user_id), class: 'btn-sm btn-dark' %>
+<div class="user-address">
+  <%= link_to '<i class="fas fa-thin fa-house"></i> Home'.html_safe, root_path, class: 'btn-sm btn-dark' %>
+  <%= link_to '<i class="fas fa-light fa-plus"></i> Add New Address'.html_safe , new_user_address_path(:user_id), class: 'btn-sm btn-dark' %>
 </div>

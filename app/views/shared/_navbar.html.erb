@@ -58,8 +58,8 @@
         </li>
       </ul>
       <% if user_signed_in? %>
-        <form class="d-flex" action="/search_product">
-          <input class="form-control me-2" name="q" type="search" placeholder="Material/Vendor/Country" aria-label="Search">
+        <form class="d-flex" action="/search_products">
+          <input class="form-control me-2" name="q" type="search" placeholder="Product Name/Material/Vendor" aria-label="Search">
           <button class="search btn btn-outline-success" type="submit">Search</button>
         </form>
       <% end %>

@@ -1,11 +1,9 @@
-<%#= turbo_stream.replace @cart_item do %>
-<!-- <turbo-frame id="cart-item-<%= @cart_item.id %>-quantity"><%= @cart_item.cart_item_quantity %></turbo-frame> -->
-	<%#= render 'carts/cart_item', cart_item: @cart_item %>
-<%# end %>
 <% product =  @cart_item.product %>
 <turbo-stream action="replace" target="cart-item-<%= @cart_item.id %>-quantity">
   <template>
-    <turbo-frame id="cart-item-<%= @cart_item.id %>-quantity"><%= @cart_item.cart_item_quantity %></turbo-frame>
+    <turbo-frame id="cart-item-<%= @cart_item.id %>-quantity">
+      <%= render 'order_quantity', cart_item: @cart_item %>
+    </turbo-frame>
   </template>
 </turbo-stream>
 

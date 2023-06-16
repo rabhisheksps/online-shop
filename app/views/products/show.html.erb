@@ -1,27 +1,27 @@
 <h1 class="page-heading">Product Details:</h1><hr />
-
-<div class="jumbotron">
-  <h2>Product Name: <%= @product.product_name %></h2>
-  <p>Product Price: $<%= @product.price.round(2) %></p>
-  <p>Product Vendor: <%= @product.vendor %></p>
-  <p>Product Category: <%= @product.category.category_name %></p>
-  <p>Product Description: <%= @product.description %></p>
-  <p>Warehouse Country: <%= @product&.country&.name || "NA" %></p>
-  <p>Stock Available: <%= @product.stock_quantity %></p>
-  <p>Product Shipping Fees: $<%= @product.shipping_fees.round(2) %></p>
-  <p>Added Tax: $<%= @product.tax.to_s %></p>
-</div><br/>
-<hr class="my-4">
-<div>
-  <% if @product.images.attached? %>
-    <% @product.images.each do |image| %>
-      <%= image_tag image ,class: "product-image" %>
+<div class="profile-pic">
+  <div class="jumbotron">
+    <h2><strong>Product Name: </strong><%= @product.product_name %></h2>
+    <p><strong>Product Price: </strong>$<%= @product.price.round(2) %></p>
+    <p><strong>Product Vendor: </strong><%= @product.vendor %></p>
+    <p><strong>Product Category: </strong><%= @product.category.category_name %></p>
+    <p><strong>Product Description: </strong><%= @product.description %></p>
+    <p><strong>Warehouse Country: </strong><%= @product&.country&.name || "NA" %></p>
+    <p><strong>Stock Available: </strong><%= @product.stock_quantity %></p>
+    <p><strong>Product Shipping Fees: </strong>$<%= @product.shipping_fees.round(2) %></p>
+    <p><strong>Added Tax: </strong>$<%= @product.tax.to_s %></p>
+  </div><br/>
+  <div>
+    <% if @product.images.attached? %>
+      <% @product.images.each do |image| %>
+        <%= image_tag image ,class: "product-image" %>
+      <% end %>
     <% end %>
-  <% end %>
-</div><br/>
+  </div><br/>
+</div>
 <div class="page-heading">
   <div>
-    <%= link_to "Back", products_path, class:"btn-sm btn-dark" %>
+    <%= link_to '<i class="fas fa-light fa-backward"></i> Back'.html_safe , products_path, class:"btn-sm btn-dark" %>
     <% if current_user.role == "Customer" %>
       <% if !@wishlist_product_ids.include?(@product.id) %>
         <%= link_to '<i class="fas fa-solid fa-heart"></i> Add to wishlist'.html_safe , add_to_wishlist_product_path(@product), method: :post, class: "btn-sm btn-secondary" %>

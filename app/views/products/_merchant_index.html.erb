@@ -23,19 +23,19 @@
           <td><%= product.material%></td>
           <td><%= product.vendor%></td>
           <td><%= product&.country&.name || "NA" %></td>
-          <td>$<%= product.shipping_fees.round(2)%> $</td>
+          <td>$<%= product.shipping_fees.round(2)%></td>
           <td>$<%= product.tax.round(2) %></td>
           <td><%= product.stock_quantity %></td>
         </tr>
       <% end %>
     </tbody>
   </table><br>
-  <div class="new-product">
-    <%= link_to "New Product", new_product_path,  class: 'btn-sm btn-dark' %>
-  </div>
 <% end %>
 <% if @products.count >=  2 %>
   <div class="page-heading">
     <%= paginate @products %>
   </div>
 <% end %>
+<div class="new-product">
+  <%= link_to '<i class="fas fa-light fa-plus"></i> New Product'.html_safe , new_product_path,  class: 'btn-sm btn-dark' %>
+</div>

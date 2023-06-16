@@ -29,8 +29,8 @@
 <% end %>
 <div class="page-heading">
   <div>
-    <%= link_to "New Product", new_product_path,  class: 'btn-sm btn-dark' %>
-    <%= link_to "Home", root_path, class:"btn-sm btn-secondary" %>
+    <%= link_to '<i class="fas fa-light fa-plus"></i> New Product'.html_safe , new_product_path,  class: 'btn-sm btn-dark' %>
+    <%= link_to '<i class="fas fa-thin fa-house"></i> Home'.html_safe, root_path, class:"btn-sm btn-secondary" %>
   </div>
 </div><br />
 <% if @products.count >= 3 %>

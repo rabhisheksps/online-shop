@@ -17,13 +17,13 @@
             </ul><br />
             <% if current_user.role == "Merchant" %>
               <div class="card-links">
-                <%= link_to "Explore", category_subcategories_path(category.id), class:"btn-sm btn-primary"%>
-                <%= link_to "Edit", edit_category_path(category), class:"btn-sm btn-secondary"%>
-                <%= link_to "Delete", category, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-danger' %>
+                <%= link_to '<i class="fas fa-thin fa-magnifying-glass"></i> Explore'.html_safe, category_subcategories_path(category.id), class:"btn-sm btn-dark"%>
+                <%= link_to '<i class="fas fa-sharp fa-light fa-trash"></i> Delete'.html_safe , category, data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class: 'btn-sm btn-danger' %>
+                <%= link_to '<i class="fas fa-edit"></i> Edit'.html_safe , edit_category_path(category), class:"btn-sm btn-dark"%>
               </div>
             <% else %>
               <div class="page-heading">
-                <%= link_to "Explore", category_subcategories_path(category.id), class:"btn-sm btn-primary"%>
+                <%= link_to '<i class="fas fa-thin fa-magnifying-glass"></i> Explore'.html_safe , category_subcategories_path(category.id), class:"btn-sm btn-dark "%>
               </div>
             <% end %> 
           </div>
@@ -34,7 +34,7 @@
 <% end %>
 <% if current_user.role == 'Customer' %>
   <div class="page-heading">
-    <%= link_to "Home", root_path, class:"btn-sm btn-dark" %>
+    <%= link_to '<i class="fas fa-thin fa-house"></i> Home'.html_safe, root_path, class:"btn-sm btn-dark" %>
   </div>
 <% else %>
   <%= render 'links' %>

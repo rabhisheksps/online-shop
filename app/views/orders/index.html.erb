@@ -1,21 +1,28 @@
 <% if current_user.cart.payment_status == "Paid" %>
-  <h2 class="order-heading">Order History</h2><hr />
+  <h2 class="order-heading">Purchase History</h2><hr />
   <% @orders.each do |order| %>
-    <% order.products.each do |product| %>
+    <% order.order_products.each do |order_product| %>
       <div class="profile-pic">
         <div class="jumbotron">
-          <p>Product Name: <%= product.product_name %></p>
+          <p>Product Name: <%= order_product.product.product_name %></p>
           <p>User Email: <%= current_user.email %></p>
-          <p>User Address :<%= current_user.addresses.first.address_line_1 %>, <%= current_user.addresses.first.city %>, <%= current_user.addresses.first.state %></p>
-          <p>Unit Price: $<%= product.price %></p>
-          <p>Shipping Fees: $<%= product.shipping_fees %></p>
+          <p>Delivery Address :<%= current_user&.addresses&.first&.address_line_1 || "NA" %>, <%= current_user&.addresses&.first&.city || "NA" %>, <%= current_user&.addresses&.first&.state || "NA" %></p>
+          <p>Unit Price: $<%= order_product.product.price %></p>
+          <p>Shipping Fees: $<%= order_product.product.shipping_fees %></p>
+          <p>Order Date: <%=order_product.created_at.strftime("%d-%B-%Y %H:%M %p") %> </p>
+          <p>Taxation ID: <%= order_product&.taxation_id || "NA" %></p>
         </div>
-        <div> 
-          <% if product.images.attached? %>
-            <%= image_tag(product.images.first ,class: "product-image") %>
-          <% end %>
-        </div>   
-      </div><hr /> 
+        <div>
+          <div> 
+            <% if order_product.product.images.attached? %>
+              <%= image_tag(order_product.product.images.first ,class: "product-image") %>
+            <% end %>
+          </div><br />
+          <div class="page-heading">
+            <%= link_to '<i class="fas fa-shopping-cart"></i> Buy Again'.html_safe, cart_add_item_path(product_id: order_product.product.id, cart_id: current_user.cart.id), class:"btn-sm btn-dark" %>
+          </div>
+        </div>
+      </div><hr />
       <% end %>
     <% end %>
   <div class="page-heading">

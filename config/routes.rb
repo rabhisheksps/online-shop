@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get 'quantity/increase'
-  get 'quantity/decrease'
   
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
@@ -31,10 +29,6 @@ Rails.application.routes.draw do
     resources :products, only: %i[new create]
   end
 
-  # resources :orders do
-  #   resources :payments, only: %i[new create]
-  # end 
-
   resources :products do
     member do
       get :add_to_wishlist
@@ -57,24 +51,12 @@ Rails.application.routes.draw do
     resources :subcategories, only: %i[new create index]
   end
 
-  # resources :cart do
-  #   resources :products
-  # end
-
   resources :carts, only: %i[index] do
     get :add_item
     post :add_item
-    # delete :remove_item
-    # patch :update_item_quantity
   end
 
   resources :cart_items, only: %i[destroy] 
-
-  # resources :cart_items do
-  #   member do
-  #     patch 'increase_count'
-  #   end
-  # end
 
   resources :addresses, except: %i[new create]
   resources :wishlists, except: %i[destroy]
@@ -86,14 +68,10 @@ Rails.application.routes.draw do
   get '/search_products', to: 'products#search_products'
   get '/my_products', to: 'products#my_products'
   get '/about_us', to: "users#about_us"
-  # post 'webhooks/payments/update_status', to: 'webhooks/payments#update_status'
-  # post 'webhooks/payments/cancel', to: 'webhooks/payments#cancel'
-  # get 'checkout_status', to: 'payments#checkout_status'
   resources :cart_items, only: %i[edit update]
   get 'user_card_info', to: 'card_infos#show'
   put 'carts/change_quantity', to: 'carts#change_quantity'
-  post '/webhooks/:source', to: 'webhooks#create'
-  get 'checkout_success', to: 'payments#checkout_success'
-  get 'checkout_cancel', to: 'payments#checkout_cancel'
-  post 'check_product_quantity', to: 'carts#check_product_quantity'
+  post 'webhooks/payments/create', to: "webhooks/payments#create"
+  get 'success', to: 'payments#success'
+  get 'cancel', to: 'payments#cancel'
 end

@@ -4,18 +4,17 @@
   <td><%= s_no %></td>
   <td>
     <% if cart_item.product.images.attached? %>
-      <%= image_tag(cart_item.product.images.first, class:'img-fluid',style:"height: auto; width:100px;") %>
+      <%= image_tag(cart_item.product.images.first, class:'img-fluid',style:"height: 150px; width:150px;") %>
     <% end %>
   </td>
   <% cart_item.product = product %>
   <td><%= link_to product.product_name, product_path(product),class: 'product-link' %></td>
-  <td><%= product.stock_quantity %></td>
   <td>$<%= product.price.round(2) %></td>
   <td><%= render 'order_quantity', cart_item: cart_item %></td>
   <td>$<%= product.shipping_fees.round(2) %></td>
   <td>$<%= product.tax.round(2) %></td>
   <td>$<turbo-frame id="cart-item-<%= cart_item.id %>-total"><%= ((product.price * cart_item.cart_item_quantity) + product.tax + product.shipping_fees).round(2) %></turbo-frame></td>
   <td>
-    <%= link_to 'Delete', cart_item_path(id: cart_item.id), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-dark" %>
+    <%= link_to '<i class="fas fa-sharp fa-light fa-trash"></i>  Remove'.html_safe, cart_item_path(id: cart_item.id), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-dark" %>
   </td>
 </tr>
