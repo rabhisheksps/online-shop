@@ -1,8 +1,12 @@
 class CartsController < ApplicationController
 
+  before_action :authenticate_user!
+  before_action :find_cart, except: %i[index new create]
+
   def index
     @cart = current_user.cart
-    @cart_items = current_user.cart.cart_items.includes(product: [images_attachments: :blob])
+    @cart_items = current_user.cart_items.includes(product: [images_attachments: :blob]).order("created_at DESC")
+    @checkout_total = @cart.checkout_total
   end
 
   def new
@@ -11,7 +15,7 @@ class CartsController < ApplicationController
   end
 
   def create
-    if !current_user.cart.present?
+    if !@cart.present?
       @cart = Cart.create(user_id: current_user.id)
       if @cart.save
         redirect_to cart_checkout_path(@cart.id)
@@ -23,38 +27,25 @@ class CartsController < ApplicationController
     end
   end
 
-  # def show
-  #   @cart = current_user.cart
-  #   @cart_items = @cart.cart_items.products
-  # end
-
   def add_item
-    @cart = current_user.cart
     @product = Product.find(params[:product_id])
-    @cart.cart_items.create(cart_id: @cart.id, product_id: @product.id, cart_item_quantity: 1)
+    @cart.cart_items.create!(cart_id: @cart.id, product_id: @product.id, cart_item_quantity: 1)
     redirect_to carts_path, notice: "Product added to cart successfully"
   end
 
-  def update
-    @cart_item = current_user.cart.cart_items.find(params[:id])
-    @cart_item.product.update(product_order_quantity: params[:product_order_quantity])
-    respond_to do |format|
-      format.js
+  def change_quantity
+    @cart_item = current_user.cart_items.find(params[:id])
+    if params[:change_type] == 'Increase'
+      @cart_item.update(cart_item_quantity: @cart_item.cart_item_quantity + 1)
+    elsif params[:change_type] == 'Decrease'
+      @cart_item.update(cart_item_quantity: @cart_item.cart_item_quantity - 1) unless (@cart_item.cart_item_quantity - 1).zero?
     end
+    @checkout_total = @cart.checkout_total
   end
 
-  # def remove_item
-  #   @cart_item = current_user.cart.cart_items.find(params[:cart_item_id])
-  #   @cart_item.destroy
-  #   redirect_to cart_path
-  # end
+  private
 
-  # def increase_count
-  #   @cart_item = current_user.cart.cart_items.find(params[:id])
-  #   @cart_item.product.increment!(:product_order_quantity)
-
-  #   respond_to do |format|
-  #     format.js
-  #   end
-  # end
+  def find_cart
+    @cart = current_user.cart
+  end
 end

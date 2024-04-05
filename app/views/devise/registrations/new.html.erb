@@ -1,7 +1,14 @@
 <h2 class="page-heading">Sign Up Form</h2>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name),data: { turbo: false }) do |f| %>
+  <% if resource.errors.any? %>
+    <ul>
+      <h4><%= pluralize(resource.errors.count, 'error') %> prohibited from submitting signing up!</h4>
+      <% resource.errors.full_messages.each do |message| %>
+        <h6><%= message %></h6>
+      <% end %>
+    </ul>
+  <% end %>
 <div>
   <div class="field">
     <%= f.label :email %><br />
@@ -46,8 +53,11 @@
     <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   </div><br />
 
+  <%= flash[:recaptcha_error] %>
+  <%= recaptcha_tags noscript: false %><br />
+
   <div>
     <%= f.button "Sign Up", class: "btn btn-sm btn-primary" %>
-  </div><br />
+  </div>  
 </div>
 <% end %>

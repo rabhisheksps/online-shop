@@ -2,7 +2,7 @@ ActiveAdmin.register Subcategory do
 
   menu parent: "Listed Items"
 
-  actions :all, except: [:update, :edit]
+  actions :all #, except: [:update, :edit]
 
   permit_params :subcategory_name, :approval_status, :image
 

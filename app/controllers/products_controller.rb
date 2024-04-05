@@ -1,10 +1,11 @@
 class ProductsController < ApplicationController
 
-  before_action :authenticate_user!, except: %i[index]
+  before_action :authenticate_user!
   before_action :find_product, only: %i[show edit update destroy add_to_wishlist]
 
   def index
-    @products = Product.where(approval_status: 'Approved').page(params[:page])
+    @products = Product.includes(:country).where(approval_status: 'Approved').order("created_at DESC").page(params[:page])
+    @cart_product_ids = current_user.cart_items.pluck(:product_id)
   end
 
   def new
@@ -21,6 +22,7 @@ class ProductsController < ApplicationController
   end
 
   def show
+    @wishlist_product_ids = current_user.wishlist_products.includes(:product, product: [images_attachments: :blob]).pluck(:product_id)
   end
 
   def edit
@@ -35,19 +37,19 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    if @product.destroy
+    if @product.destroy!
       redirect_to products_path, notice: "Product is successfully deleted."
     else
       redirect_to root_path, notice: "Product cannot be deleted. Try Again!"
     end
   end
   
-  def search_product
-    @search_products = Product.where("material ILIKE ? OR vendor ILIKE ?", "%" + params[:q] + "%", "%" + params[:q] + "%")
+  def search_products
+    @search_products = Product.where("product_name ILIKE ? OR material ILIKE ? OR vendor ILIKE ?", "%" + params[:q] + "%", "%" + params[:q] + "%", "%" + params[:q] + "%")
   end 
 
   def my_products
-    @my_products = current_user.products.order("created_at DESC")
+    @my_products = current_user.products.includes(:country).order("created_at DESC").page(params[:page])
   end
 
   def add_to_wishlist
@@ -58,7 +60,7 @@ class ProductsController < ApplicationController
     end
     @favorite_item = wishlist.wishlist_products.create(product_id: @product.id)
     if @favorite_item.save
-      redirect_to root_path, notice: "Product successfully added to your wishlist!"
+      redirect_to wishlist_products_path, notice: "Product successfully added to your wishlist!"
     else
       redirect_to root_path, notice: "Product is already in your wishlist!"
     end
@@ -66,14 +68,14 @@ class ProductsController < ApplicationController
 
   def all_products
     @subcategory = Subcategory.find(params[:subcategory_id])
-    @products = @subcategory.products.page(params[:page])
+    @products = @subcategory.products.includes([images_attachments: :blob]).page(params[:page])
   end
 
   private
 
   def product_params
     params.require(:product).permit(:product_name, :category_id, :subcategory_id, :price, :material, :vendor,
-       :description, :stock_quantity, :shipping_fees, :tax, :available, images: [])
+       :description, :stock_quantity, :shipping_fees, :tax, :available, :country_id, images: [])
   end
 
   def find_product

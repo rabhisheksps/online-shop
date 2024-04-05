@@ -1,6 +1,15 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  config.after_initialize do
+    Bullet.enable        = true
+    Bullet.alert         = true
+    Bullet.bullet_logger = true
+    Bullet.console       = true
+    Bullet.rails_logger  = true
+    Bullet.add_footer    = true
+  end
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded any time
@@ -72,10 +81,10 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost:3000'}
 
   config.action_mailer.smtp_settings = {
-    user_name: 'apikey',
-    password: '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',
+    user_name: 'rabhishek2416@gmail.com',
+    password: 'pjaissugxvrdbocl',
     domain: 'localhost',
-    address: 'smtp.sendgrid.net',
+    address: 'smtp.gmail.com',
     port: 587,
     authentication: 'plain',
     enable_starttls_auto: true
@@ -84,6 +93,11 @@ Rails.application.configure do
   ENV['GOOGLE_OAUTH_CLIENT_ID'] = '1058301303547-5meb2f7k6aqt7pd4n82ol3n07vmh6b0r.apps.googleusercontent.com'
   ENV['GOOGLE_OAUTH_CLIENT_SECRET'] = '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'
 
-  config.hosts << "9be8-182-75-107-70.ngrok-free.app"
-  # Rails.application.default_url_options ={ host: 'd13d-182-75-107-70.ngrok-free.app'}
+  RECAPTCHA_SITE_KEY= '6LeBTXwmAAAAAH5onuiIDTl0U4GxC83ylOxjIM87'
+  RECAPTCHA_SECRET_KEY= '6LeBTXwmAAAAAOvsNj3N-E3xGjqJkhSsm8fGoAA-'
+
+
+  config.hosts << "2bfa-182-75-107-70.ngrok-free.app"
+  config.web_console.whitelisted_ips = ['182.75.107.70']
+  # Rails.application.default_url_options ={ host: 'e08c-182-75-107-70.ngrok-free.app'}
 end

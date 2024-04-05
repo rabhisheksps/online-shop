@@ -5,7 +5,7 @@ ActiveAdmin.register Category do
 
   permit_params :category_name, :approval_status, :image
 
-  actions :all, except: [:update, :edit]
+  actions :all
 
 
   filter :category_name

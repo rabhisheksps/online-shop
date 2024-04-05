@@ -4,23 +4,19 @@ class OrdersController < ApplicationController
   before_action :find_order, except: %i[index new create destroy]
 
   def index
-    @cart = current_user.cart
-    @paid_cart_items = @cart.cart_items
+    @orders = current_user.orders.includes(:order_products).order('created_at DESC').page(params[:page])
   end
 
   def new
     @order = Order.new
-    @product = Product.find(params[:product_id])
   end
 
   def create
-    @order = current_user.orders.new(order_params.merge(product_id: params[:product_id]))
+    @order = current_user.orders.new(params[:cart_id])
     if @order.save
-      redirect_to order_checkout_path(@order.id)
+      redirect_to orders_path
     else
-      @product = Product.find(params[:product_id])
-      flash[:alert] = @order.errors.full_messages.to_sentence
-      render :new, status: :unprocessable_entity
+      redirect_to root_path, notice: "Failed to update your order."
     end
   end
 

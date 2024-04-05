@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_02_121948) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_13_065807) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -121,18 +121,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_121948) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "orders", force: :cascade do |t|
-    t.integer "order_quantity"
-    t.text "order_address"
-    t.string "pincode"
-    t.string "city"
-    t.string "state"
-    t.string "country"
+  create_table "countries", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "order_products", force: :cascade do |t|
+    t.bigint "order_id", null: false
     t.bigint "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "taxation_id"
+    t.index ["order_id"], name: "index_order_products_on_order_id"
+    t.index ["product_id"], name: "index_order_products_on_product_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_orders_on_product_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -159,7 +167,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_121948) do
     t.datetime "updated_at", null: false
     t.integer "category_id"
     t.integer "subcategory_id"
-    t.boolean "available"
+    t.boolean "available", default: false
+    t.integer "final_order_quantity", default: 0
+    t.integer "country_id"
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 
@@ -170,18 +180,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_121948) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_subcategories_on_category_id"
-  end
-
-  create_table "user_card_infos", force: :cascade do |t|
-    t.string "brand"
-    t.string "country"
-    t.integer "last4"
-    t.integer "exp_month"
-    t.integer "exp_year"
-    t.bigint "users_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["users_id"], name: "index_user_card_infos_on_users_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -234,12 +232,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_121948) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
-  add_foreign_key "orders", "products"
+  add_foreign_key "order_products", "orders"
+  add_foreign_key "order_products", "products"
   add_foreign_key "orders", "users"
   add_foreign_key "payments", "orders"
   add_foreign_key "products", "users"
   add_foreign_key "subcategories", "categories"
-  add_foreign_key "user_card_infos", "users", column: "users_id"
   add_foreign_key "wishlist_products", "products"
   add_foreign_key "wishlist_products", "wishlists"
   add_foreign_key "wishlists", "users"
