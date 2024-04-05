@@ -13,6 +13,7 @@
  *= require_tree .
  *= require_self
  */
+@import "font-awesome";
 
   .login-info{
     position: absolute; 
@@ -192,4 +193,37 @@
   .cart-link{
     display: flex;
     justify-content: center;
+  }
+
+  .card-links{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .shared-links{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .disable{
+    pointer-events: none;
+    opacity: .5;
+  }
+
+  .address-notice{
+    display: flex;
+    color: red;
+    justify-content: center;
+  }
+
+  .notice{
+    color: red;
+  }
+
+  .user-address{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
   }

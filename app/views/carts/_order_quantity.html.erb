@@ -1,0 +1,8 @@
+<turbo-frame id="cart-item-<%= cart_item.id %>-quantity">
+  <%= link_to '+', carts_change_quantity_path(id: cart_item.id, change_type: 'Increase'), data: { turbo_method: :put }, class: "btn-sm btn-dark #{'disable' if cart_item.cart_item_quantity >= cart_item.product.stock_quantity}" %>
+  <%= cart_item.cart_item_quantity %>
+  <%= link_to '-', carts_change_quantity_path(id: cart_item.id, change_type: 'Decrease'), data: { turbo_method: :put }, class: "btn-sm btn-secondary #{'disable' if cart_item.cart_item_quantity <= 1}" %>
+  <% if cart_item.cart_item_quantity > cart_item.product.stock_quantity %><br/>
+    <p class="notice">Please check your order quantity</p>
+  <% end %>
+</turbo-frame>

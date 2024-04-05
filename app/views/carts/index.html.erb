@@ -1,35 +1,50 @@
 <div class="page-heading">
   <h1>Shopping Cart</h1>
 </div>
-
 <% if @cart_items.count <= 0 %>
   <h1 class="page-heading">Please add items to your cart first</h1>
+  <div class="page-heading" >
+    <div>
+      <%= link_to '<i class="fas fa-light fa-plus"></i> Add Item'.html_safe, products_path, class: 'btn-sm btn-secondary' %>
+      <%= link_to '<i class="fas fa-solid fa-left"></i> Back'.html_safe , root_path, class: 'btn-sm btn-dark' %>
+    </div>
+  </div>
 <% else %>
-<div class="main">
-  <div class="main-row">
-    <% @cart_items.each do |cart_item| %>
-      <div class="image-card" style="width: 18rem;">
-        <% if cart_item.product.images.attached? %>
-          <%= image_tag(cart_item.product.images.first, class:'img-fluid',style:"height:12rem; width:100%;") %>
-        <% end %>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Product Name: <%= cart_item.product.product_name %></li>
-            <li class="list-group-item">Cart Owner: <%= cart_item.cart.user.first_name %></li>
-            <li class="list-group-item">Available Stock <%= cart_item.product.stock_quantity %> </li>
-          </ul><br />
-          <div class="cart-link">
-            <%= link_to 'Delete', cart_item_path(id: cart_item.id), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-dark" %>
-          </div>
-        </div>
-      </div>
-    <% end %>
+  <div class="main">
+    <div class="container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Product Image</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">Unit Price</th>
+            <th scope="col">Order Quantity</th>
+            <th scope="col">Shipping Fees</th>
+            <th scope="col">Tax</th>
+            <th scope="col">Total</th> 
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody >
+          <% @cart_items.each_with_index do |cart_item, index| %>
+            <%= render 'carts/cart_item', cart_item: cart_item, s_no: index+1 %>
+          <% end %>
+            <td colspan="8" class="text-end"><b>Total -</b></td>
+            <td>$<turbo-frame id="cart-items-checkout-total"><%= @checkout_total %></turbo-frame>
+            </td>
+        </tbody>
+      </table>
+    </div>
+  </div><br />
+  <div class="page-heading">
+    <div>
+      <% if current_user.addresses.first.nil? %>
+        <p class="address-notice">Please fill your address details first </p>
+      <% else %>
+        <%= link_to '<i class="fas fa-duotone fa-bag-shopping"></i> Checkout'.html_safe, cart_checkout_path(cart_id: current_user.cart.id), class:"btn-sm btn-dark",  data: { turbo: false }%>
+      <% end %>
+      <%= link_to '<i class="fas fa-thin fa-house"></i> Home'.html_safe, root_path, class: 'btn-sm btn-secondary' %>
+    </div>
   </div>
-</div>
-<% end %><br />
-<div class="page-heading">
-  <div>
-    <%= link_to 'Checkout', cart_checkout_path(cart_id: current_user.cart.id), class:"btn-sm btn-secondary"%>
-    <%= link_to 'Back', root_path, class: 'btn-sm btn-dark' %>
-  </div>
-</div>
+<% end %>

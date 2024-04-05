@@ -43,8 +43,8 @@
     </div><br />
 
     <div>
-      <%= f.button "Add Address", class: "btn btn-sm btn-primary" %>
-      <%= link_to 'Back', addresses_path, class:"btn btn-sm btn-dark" %>
+      <%= f.button '<i class="fas fa-light fa-plus"></i> Add New Address'.html_safe, class: "btn-sm btn-primary" %>
+      <%= link_to '<i class="fas fa-light fa-backward"></i> Back'.html_safe, addresses_path, class:"btn-sm btn-dark" %>
     </div><br />
   </div>
 <% end %>

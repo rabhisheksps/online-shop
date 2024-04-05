@@ -1,6 +1,6 @@
-<h3>Search Results</h3>
+<h3 class="page-heading">Search Results</h3>
 <% if @search_products.count <= 0 %>
-  <h2 class="page-heading">No products available. Please visit after some time!!</h2>
+  <h2 class="page-heading">No products available. Please visit again after some time!!</h2>
 <% else %>
   <h1 class="page-heading">Products List</h1><hr />
   <table class="table table-bordered">
@@ -10,6 +10,7 @@
         <th scope="col">Product Price: </th>
         <th scope="col">Product Material: </th>
         <th scope="col">Product Vendor: </th>
+        <th scope="col">Warehouse Country:</th>
         <th scope="col">Product Shipping Fees: </th>
         <th scope="col">Added Tax: </th>
         <th scope="col">Stock Available: </th>
@@ -24,18 +25,19 @@
             <td>$<%= product.price.round(2)%></td>
             <td><%= product.material%></td>
             <td><%= product.vendor%></td>
+            <td><%= product&.country&.name || "NA" %></td>
             <td>$<%= product.shipping_fees.round(2)%> $</td>
             <td>$<%= product.tax.round(2) %></td>
             <td><%= product.stock_quantity %></td>
             <td>
-              <%= link_to 'Buy', new_product_order_path(product_id: product.id), class:"btn-sm btn-dark" %>
+              <%= link_to 'Add to cart', cart_add_item_path(product_id: product.id, cart_id: current_user.cart.id), class:"btn-sm btn-dark" %>
             </td>
           </tr>
         <% end %>
       <% end %>
     </tbody>
   </table><br>
-  <div class="page-heading">
-    <%= link_to "Back", products_path, class:"btn-sm btn-dark" %>
-  </div>
-<% end %>
+  <% end %>
+<div class="page-heading">
+  <%= link_to '<i class="fas fa-thin fa-house"></i> Home'.html_safe, products_path, class:"btn-sm btn-dark" %>
+</div>

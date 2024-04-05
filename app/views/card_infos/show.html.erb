@@ -1,0 +1,51 @@
+<% if current_user.card_info.present? %>
+  <div class="page-heading">
+    <h1>User Card Details</h1>
+  </div>
+  <div class="card bg-light">
+    <div class="card-body">
+      <h5 class="page-heading">Credit Card Information</h5>
+      <div class="card-text">
+        <div class="row">
+          <div class="col-8">
+            <label for="card-number" class="form-label">Card Number</label>
+            <input type="text" class="form-control" id="card-number" value="**** **** **** <%= @card.last4 %>" readonly>
+          </div>
+          <div class="col-4">
+            <label for="expiry-date" class="form-label">Expiry Date</label>
+            <input type="text" class="form-control" id="expiry-date" value="<%= @card.exp_month %>/<%= @card.exp_year %>" readonly>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-8">
+            <label for="cardholder-name" class="form-label">Cardholder Name</label>
+            <input type="text" class="form-control" id="cardholder-name" value="<%= current_user.first_name %> <%= current_user.last_name %>" readonly>
+          </div>
+          <div class="col-4">
+            <label for="cvv" class="form-label">CVV</label>
+            <input type="text" class="form-control" id="cvv" value="***" readonly>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-8">
+            <label for="cardholder-name" class="form-label">Card Brand</label>
+            <input type="text" class="form-control" id="cardholder-name" value="<%= @card.brand %>" readonly>
+          </div>
+          <div class="col-4">
+            <label for="cvv" class="form-label">Card Country</label>
+            <input type="text" class="form-control" id="cvv" value="<%=@card.country %>" readonly>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><br />
+<% else %>
+  <div class="page-heading">
+    <h1>Please add a card first.</h1>
+  </div><br />
+<% end %>
+<div class="page-heading">
+  <div>  
+    <%= link_to "Back", root_path,  class: 'btn-sm btn-dark' %>
+  </div>
+</div>

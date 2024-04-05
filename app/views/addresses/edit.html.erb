@@ -39,7 +39,8 @@
     </div><br />
 
     <div>
-      <%= f.button "Update", class: "btn btn-sm btn-primary" %>
-    </div><br />
+      <%= f.button "Update Address", class: "btn-sm btn-primary" %>
+      <%= link_to '<i class="fas fa-light fa-backward"></i> Back'.html_safe, addresses_path(current_user.id), class:"btn-sm btn-dark"%>
+    </div><br>
   </div>
 <% end %>

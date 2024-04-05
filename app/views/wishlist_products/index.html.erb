@@ -5,11 +5,13 @@
   <table class="table table-bordered">
     <thead class="heading thead-dark">
       <tr>
-        <th scope="col">Product Name: </th>
-        <th scope="col">Product Price: </th>
-        <th scope="col">Product Material: </th>
-        <th scope="col">Product Vendor: </th>
-        <th scope="col">Wishlist: </th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Product Price</th>
+        <th scope="col">Product Material</th>
+        <th scope="col">Product Vendor</th>
+        <th scope="col">Warehouse Country</th>
+        <th scope="col">Stock Available</th>
+        <th scope="col">Wishlist</th>
       </tr>
     </thead>
     <tbody>
@@ -20,9 +22,14 @@
             <td><%= product.price%> $</td>
             <td><%= product.material%></td>
             <td><%= product.vendor%></td>
-            <td><%= link_to 'Remove', wishlist_product_path(wishlist_product), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-dark" %></td> 
+            <td><%= product&.country&.name || "NA" %></td>
+            <td><%= product.stock_quantity %></td>
+            <td><%= link_to '<i class="fas fa-sharp fa-light fa-trash"></i>  Remove'.html_safe, wishlist_product_path(wishlist_product), data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}, class:"btn-sm btn-dark" %></td> 
           </tr>
       <% end %>
     </tbody>
   </table><br>
 <% end %>
+<div class="page-heading">
+  <%= link_to '<i class="fas fa-light fa-backward"></i> Back'.html_safe , products_path, class:"btn-sm btn-dark" %>
+</div>

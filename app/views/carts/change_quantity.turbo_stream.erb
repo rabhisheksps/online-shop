@@ -1,0 +1,20 @@
+<% product =  @cart_item.product %>
+<turbo-stream action="replace" target="cart-item-<%= @cart_item.id %>-quantity">
+  <template>
+    <turbo-frame id="cart-item-<%= @cart_item.id %>-quantity">
+      <%= render 'order_quantity', cart_item: @cart_item %>
+    </turbo-frame>
+  </template>
+</turbo-stream>
+
+<turbo-stream action="replace" target="cart-item-<%= @cart_item.id %>-total">
+  <template>
+    <turbo-frame id="cart-item-<%= @cart_item.id %>-total"><%= (product.price * @cart_item.cart_item_quantity) + product.tax + product.shipping_fees %></turbo-frame>
+  </template>
+</turbo-stream>
+
+<turbo-stream action="replace" target="cart-items-checkout-total">
+  <template>
+    <turbo-frame id="cart-items-checkout-total"><%= @checkout_total %></turbo-frame>
+  </template>
+</turbo-stream>

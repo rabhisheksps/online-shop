@@ -1,26 +1,24 @@
-<h1>Product Details:</h1><hr />
-
-<div class="jumbotron">
-  <h2>Product Name: <%= @wishlist_product.product_name %></h2>
-  <p>Product Price: <%= @wishlist_product.price.to_s %> $ </p>
-  <p>Product Vendor: <%= @wishlist_product.vendor %></p>
-  <p>Product material: <%= @wishlist_product.material %></p>
-  <p>Product Description: <%= @wishlist_product.description %></p>
-  <p>Stock Available: <%= @wishlist_product.stock_quantity %></p>
-  <p>Product Shipping Fees: <%= @wishlist_product.shipping_fees.to_s %> $</p>
-  <p>Added Tax: <%= @wishlist_product.tax.to_s %> $</p>
-</div><br/>
-<hr class="my-4">
-<div>
-  <% if @wishlist_product.images.attached? %>
-    <% @wishlist_product.images.each do |image| %>
-      <%= image_tag image ,class: "product-image" %>
+<h1 class="page-heading">Product Details</h1><hr />
+<div class="profile-pic">
+  <div class="jumbotron">
+    <h2>Product Name: <%= @wishlist_product.product_name %></h2>
+    <p>Product Price: <%= @wishlist_product.price.to_s %> $ </p>
+    <p>Product Vendor: <%= @wishlist_product.vendor %></p>
+    <p>Product material: <%= @wishlist_product.material %></p>
+    <p>Product Description: <%= @wishlist_product.description %></p>
+    <p>Stock Available: <%= @wishlist_product.stock_quantity %></p>
+    <p>Product Shipping Fees: <%= @wishlist_product.shipping_fees.to_s %> $</p>
+    <p>Added Tax: <%= @wishlist_product.tax.to_s %> $</p>
+  </div>
+  <hr class="my-4">
+  <div>
+    <% if @wishlist_product.images.attached? %>
+      <% @wishlist_product.images.each do |image| %>
+        <%= image_tag image ,class: "product-image" %>
+      <% end %>
     <% end %>
-  <% end %>
-</div><br/>
-<p class="lead">
-  <%= link_to "Edit", edit_wishlist_product_path(@wishlist_product), class:"btn-sm btn-secondary" %>
+  </div><br/>
+</div>
+<div class="page-heading">
   <%= link_to "Back", wishlist_products_path, class:"btn-sm btn-dark" %>
-  <%#= link_to "Add to wishlist", add_to_wishlist_product_path(@product), method: :post, class: "btn-sm btn-secondary" %>
-</p>
 </div>

@@ -24,6 +24,10 @@
       <%= form.select :subcategory_id,  options_from_collection_for_select(Subcategory.all, "id", "subcategory_name"),{prompt: "Select Subcategory"}, {class:"form-control" }%>
     </div><br/>
 
+    <div class="field form-group col-md-6">
+      <%= form.select :country_id,  options_from_collection_for_select(Country.all, "id", "name"),{prompt: "Select Warehouse Country"}, {class:"form-control" }%>
+    </div><br/>
+
     <div class="field form-group">
       <%= form.number_field :price, step: :any,  class:"form-control", placeholder:"Product Price"  %>
     </div><br/>

@@ -45,7 +45,7 @@ ActiveAdmin.register User do
     attributes_table do
       row :first_name
       row :last_name
-      row :address
+      row('User Address') { |obj| obj.addresses&.first&.address_line_1 || "NA" }
       row :phone_number
       row :approval_status
     end
